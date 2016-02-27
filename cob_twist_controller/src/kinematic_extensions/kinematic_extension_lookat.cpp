@@ -33,7 +33,7 @@
 #include <eigen_conversions/eigen_kdl.h>
 #include "cob_twist_controller/kinematic_extensions/kinematic_extension_lookat.h"
 
-/* BEGIN KinematicExtensionLookat ********************************************************************************************/
+/* BEGIN KinematicExtensionLookat *************************************************************************************/
 bool KinematicExtensionLookat::initExtension()
 {
     /// parse robot_description and generate KDL chains
@@ -75,15 +75,21 @@ bool KinematicExtensionLookat::initExtension()
             lookat_lin_axis.z(-1.0);
             break;
         default:
-            ROS_ERROR("LookatAxisType %d not defined! Using default: 'X_POSITIVE'!", params_.lookat_offset.lookat_axis_type);
+            ROS_ERROR("LookatAxisType %d not defined! Using default: 'X_POSITIVE'!",
+                      params_.lookat_offset.lookat_axis_type);
             lookat_lin_axis.x(1.0);
             break;
     }
     KDL::Joint lookat_lin_joint("lookat_lin_joint", KDL::Vector(), lookat_lin_axis, KDL::Joint::TransAxis);
 
     KDL::Frame offset;
-    offset.p = KDL::Vector(params_.lookat_offset.translation_x, params_.lookat_offset.translation_y, params_.lookat_offset.translation_z);
-    offset.M = KDL::Rotation::Quaternion(params_.lookat_offset.rotation_x, params_.lookat_offset.rotation_y, params_.lookat_offset.rotation_z, params_.lookat_offset.rotation_w);
+    offset.p = KDL::Vector(params_.lookat_offset.translation_x,
+                           params_.lookat_offset.translation_y,
+                           params_.lookat_offset.translation_z);
+    offset.M = KDL::Rotation::Quaternion(params_.lookat_offset.rotation_x,
+                                         params_.lookat_offset.rotation_y,
+                                         params_.lookat_offset.rotation_z,
+                                         params_.lookat_offset.rotation_w);
 
     KDL::Segment lookat_rotx_link("lookat_rotx_link", lookat_lin_joint, offset);
     chain_ext_.addSegment(lookat_rotx_link);
@@ -234,4 +240,4 @@ void KinematicExtensionLookat::broadcastFocusFrame(const ros::TimerEvent& event)
     br_.sendTransform(tf::StampedTransform(transform, ros::Time::now(), params_.chain_tip_link, "lookat_focus_frame"));
 }
 
-/* END KinematicExtensionLookat ********************************************************************************************/
+/* END KinematicExtensionLookat ***************************************************************************************/

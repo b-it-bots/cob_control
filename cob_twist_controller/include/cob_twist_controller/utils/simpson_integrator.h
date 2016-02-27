@@ -123,7 +123,9 @@ class SimpsonIntegrator
                 for (unsigned int i = 0; i < dof_; ++i)
                 {
                     // Simpson
-                    double integration_value = static_cast<double>(period.toSec() / 6.0 * (vel_before_last_[i] + 4.0 * (vel_before_last_[i] + vel_last_[i]) + vel_before_last_[i] + vel_last_[i] + q_dot_avg(i)) + current_q(i));
+                    double integration_value = static_cast<double>(period.toSec() / 6.0 *
+                                (vel_before_last_[i] + 4.0 * (vel_before_last_[i] + vel_last_[i]) +
+                                 vel_before_last_[i] + vel_last_[i] + q_dot_avg(i)) + current_q(i));
 
                     // smooth outgoing positions
                     ma_pos_[i]->addElement(integration_value);

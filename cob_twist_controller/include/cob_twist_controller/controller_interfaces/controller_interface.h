@@ -41,7 +41,7 @@
 
 #include "cob_twist_controller/controller_interfaces/controller_interface_base.h"
 
-/* BEGIN ControllerInterfaceBuilder *****************************************************************************************/
+/* BEGIN ControllerInterfaceBuilder ***********************************************************************************/
 /// Class providing a static method to create controller interface objects.
 class ControllerInterfaceBuilder
 {
@@ -53,10 +53,10 @@ class ControllerInterfaceBuilder
                                                                   const TwistControllerParams& params,
                                                                   const JointStates& joint_states);
 };
-/* END ControllerInterfaceBuilder *******************************************************************************************/
+/* END ControllerInterfaceBuilder *************************************************************************************/
 
 
-/* BEGIN ControllerInterfaceVelocity ****************************************************************************************/
+/* BEGIN ControllerInterfaceVelocity **********************************************************************************/
 /// Class providing a ControllerInterface publishing velocities.
 class ControllerInterfaceVelocity : public ControllerInterfaceBase
 {
@@ -73,10 +73,10 @@ class ControllerInterfaceVelocity : public ControllerInterfaceBase
         virtual void processResult(const KDL::JntArray& q_dot_ik,
                                    const KDL::JntArray& current_q);
 };
-/* END ControllerInterfaceVelocity **********************************************************************************************/
+/* END ControllerInterfaceVelocity ************************************************************************************/
 
 
-/* BEGIN ControllerInterfacePosition ****************************************************************************************/
+/* BEGIN ControllerInterfacePosition **********************************************************************************/
 /// Class providing a ControllerInterface publishing JointGroupPositionCommands.
 class ControllerInterfacePosition : public ControllerInterfacePositionBase
 {
@@ -93,10 +93,10 @@ class ControllerInterfacePosition : public ControllerInterfacePositionBase
         virtual void processResult(const KDL::JntArray& q_dot_ik,
                                    const KDL::JntArray& current_q);
 };
-/* END ControllerInterfacePosition **********************************************************************************************/
+/* END ControllerInterfacePosition ************************************************************************************/
 
 
-/* BEGIN ControllerInterfaceTrajectory ****************************************************************************************/
+/* BEGIN ControllerInterfaceTrajectory ********************************************************************************/
 /// Class providing a ControllerInterface publishing a JointTrajectory.
 class ControllerInterfaceTrajectory : public ControllerInterfacePositionBase
 {
@@ -113,9 +113,9 @@ class ControllerInterfaceTrajectory : public ControllerInterfacePositionBase
         virtual void processResult(const KDL::JntArray& q_dot_ik,
                                    const KDL::JntArray& current_q);
 };
-/* END ControllerInterfaceTrajectory **********************************************************************************************/
+/* END ControllerInterfaceTrajectory **********************************************************************************/
 
-/* BEGIN ControllerInterfaceJointStates ****************************************************************************************/
+/* BEGIN ControllerInterfaceJointStates *******************************************************************************/
 /// Class providing a ControllerInterface publishing JointStates.
 class ControllerInterfaceJointStates : public ControllerInterfacePositionBase
 {
@@ -155,6 +155,6 @@ class ControllerInterfaceJointStates : public ControllerInterfacePositionBase
         ros::Timer js_timer_;
         void publishJointState(const ros::TimerEvent& event);
 };
-/* END ControllerInterfaceJointStates **********************************************************************************************/
+/* END ControllerInterfaceJointStates *********************************************************************************/
 
 #endif  // COB_TWIST_CONTROLLER_CONTROLLER_INTERFACES_CONTROLLER_INTERFACE_H

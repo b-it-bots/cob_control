@@ -56,7 +56,8 @@ class KinematicExtensionDOF : public KinematicExtensionBase
         virtual LimiterParams adjustLimiterParams(const LimiterParams& limiter_params) = 0;
         virtual void processResultExtension(const KDL::JntArray& q_dot_ik) = 0;
 
-        KDL::Jacobian adjustJacobianDof(const KDL::Jacobian& jac_chain, const KDL::Frame eb_frame_ct, const KDL::Frame cb_frame_eb, const ActiveCartesianDimension active_dim);
+        KDL::Jacobian adjustJacobianDof(const KDL::Jacobian& jac_chain, const KDL::Frame eb_frame_ct,
+                                        const KDL::Frame cb_frame_eb, const ActiveCartesianDimension active_dim);
 
     protected:
         unsigned int ext_dof_;
@@ -67,9 +68,9 @@ class KinematicExtensionDOF : public KinematicExtensionBase
         std::vector<double> limits_vel_;
         std::vector<double> limits_acc_;
 };
-/* END KinematicExtensionDOF **********************************************************************************************/
+/* END KinematicExtensionDOF ******************************************************************************************/
 
-/* BEGIN KinematicExtensionBaseActive ****************************************************************************************/
+/* BEGIN KinematicExtensionBaseActive *********************************************************************************/
 /// Class implementing a mobile base KinematicExtension with Cartesian DoFs (lin_x, lin_y, rot_z) enabled (i.e. 2D).
 class KinematicExtensionBaseActive : public KinematicExtensionDOF
 {
@@ -79,8 +80,8 @@ class KinematicExtensionBaseActive : public KinematicExtensionDOF
         {
             base_vel_pub_ = nh_.advertise<geometry_msgs::Twist>("base/command", 1);
 
-            min_vel_lin_base_ = 0.005; // used to avoid infinitesimal motion
-            min_vel_rot_base_ = 0.005; // used to avoid infinitesimal motion
+            min_vel_lin_base_ = 0.005;  // used to avoid infinitesimal motion
+            min_vel_rot_base_ = 0.005;  // used to avoid infinitesimal motion
             max_vel_lin_base_ = 0.5;
             max_vel_rot_base_ = 0.5;
 
@@ -108,6 +109,6 @@ class KinematicExtensionBaseActive : public KinematicExtensionDOF
         double max_vel_lin_base_;
         double max_vel_rot_base_;
 };
-/* END KinematicExtensionBaseActive **********************************************************************************************/
+/* END KinematicExtensionBaseActive ***********************************************************************************/
 
 #endif  // COB_TWIST_CONTROLLER_KINEMATIC_EXTENSIONS_KINEMATIC_EXTENSION_DOF_H

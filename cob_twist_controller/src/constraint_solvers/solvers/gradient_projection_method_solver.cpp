@@ -50,7 +50,8 @@ Eigen::MatrixXd GradientProjectionMethodSolver::solve(const Vector6d_t& in_cart_
     Eigen::MatrixXd ident = Eigen::MatrixXd::Identity(pinv.rows(), this->jacobian_data_.cols());
     Eigen::MatrixXd projector = ident - pinv * this->jacobian_data_;
 
-    Eigen::MatrixXd homogeneous_solution = Eigen::MatrixXd::Zero(particular_solution.rows(), particular_solution.cols());
+    Eigen::MatrixXd homogeneous_solution = Eigen::MatrixXd::Zero(particular_solution.rows(),
+                                                                 particular_solution.cols());
     KDL::JntArrayVel predict_jnts_vel(joint_states.current_q_.rows());
 
     for (std::set<ConstraintBase_t>::iterator it = this->constraints_.begin(); it != this->constraints_.end(); ++it)
@@ -59,12 +60,17 @@ Eigen::MatrixXd GradientProjectionMethodSolver::solve(const Vector6d_t& in_cart_
         (*it)->update(joint_states, predict_jnts_vel, this->jacobian_data_);
         Eigen::VectorXd q_dot_0 = (*it)->getPartialValues();
         Eigen::MatrixXd tmp_projection = projector * q_dot_0;
-        double activation_gain = (*it)->getActivationGain();  // contribution of the homo. solution to the part. solution
-        double constraint_k_H = (*it)->getSelfMotionMagnitude(particular_solution, tmp_projection);  // gain of homogenous solution (if active)
+
+        // contribution of the homo. solution to the part. solution
+        double activation_gain = (*it)->getActivationGain();
+
+        // gain of homogenous solution (if active)
+        double constraint_k_H = (*it)->getSelfMotionMagnitude(particular_solution, tmp_projection);
         homogeneous_solution += (constraint_k_H * activation_gain * tmp_projection);
     }
 
-    Eigen::MatrixXd qdots_out = particular_solution + this->params_.k_H * homogeneous_solution;  // weighting with k_H is done in loop
+    // weighting with k_H is done in loop
+    Eigen::MatrixXd qdots_out = particular_solution + this->params_.k_H * homogeneous_solution;
 
     // //DEBUG: for verification of nullspace projection
     // std::stringstream ss_part;

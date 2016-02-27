@@ -175,7 +175,8 @@ bool CartesianController::posePathBroadcaster(const geometry_msgs::PoseArray& ca
                                              cartesian_path.poses.at(i).orientation.z,
                                              cartesian_path.poses.at(i).orientation.w));
 
-        tf_broadcaster_.sendTransform(tf::StampedTransform(transform, ros::Time::now(), cartesian_path.header.frame_id, target_frame_));
+        tf_broadcaster_.sendTransform(tf::StampedTransform(transform, ros::Time::now(), cartesian_path.header.frame_id,
+                                                           target_frame_));
 
         ros::spinOnce();
         rate.sleep();
@@ -268,7 +269,8 @@ void CartesianController::goalCallback()
     }
 }
 
-cob_cartesian_controller::MoveLinStruct CartesianController::convertMoveLin(const cob_cartesian_controller::MoveLin& move_lin_msg)
+cob_cartesian_controller::MoveLinStruct CartesianController::convertMoveLin
+        (const cob_cartesian_controller::MoveLin& move_lin_msg)
 {
     geometry_msgs::Pose start, end;
     start = utils_.getPose(root_frame_, chain_tip_link_);   // current tcp pose
@@ -282,7 +284,8 @@ cob_cartesian_controller::MoveLinStruct CartesianController::convertMoveLin(cons
     return move_lin;
 }
 
-cob_cartesian_controller::MoveCircStruct CartesianController::convertMoveCirc(const cob_cartesian_controller::MoveCirc& move_circ_msg)
+cob_cartesian_controller::MoveCircStruct CartesianController::convertMoveCirc
+        (const cob_cartesian_controller::MoveCirc& move_circ_msg)
 {
     geometry_msgs::Pose center;
     utils_.transformPose(move_circ_msg.frame_id, root_frame_, move_circ_msg.pose_center, center);
@@ -297,7 +300,8 @@ cob_cartesian_controller::MoveCircStruct CartesianController::convertMoveCirc(co
     return move_circ;
 }
 
-cob_cartesian_controller::CartesianActionStruct CartesianController::acceptGoal(boost::shared_ptr<const cob_cartesian_controller::CartesianControllerGoal> goal)
+cob_cartesian_controller::CartesianActionStruct CartesianController::acceptGoal
+        (boost::shared_ptr<const cob_cartesian_controller::CartesianControllerGoal> goal)
 {
     cob_cartesian_controller::CartesianActionStruct action_struct;
     action_struct.move_type = goal->move_type;

@@ -92,15 +92,18 @@ bool ConstraintSolverFactory::getSolverFactory(const TwistControllerParams& para
         case WLN:
             if (params.constraint_jla == JLA_ON)
             {
-                solver_factory.reset(new SolverFactory<WLN_JointLimitAvoidanceSolver>(params, limiter_params, task_stack_controller));
+                solver_factory.reset(new SolverFactory<WLN_JointLimitAvoidanceSolver>(params, limiter_params,
+                                                                                      task_stack_controller));
             }
             else
             {
-                solver_factory.reset(new SolverFactory<WeightedLeastNormSolver>(params, limiter_params, task_stack_controller));
+                solver_factory.reset(new SolverFactory<WeightedLeastNormSolver>(params, limiter_params,
+                                                                                task_stack_controller));
             }
             break;
         case GPM:
-            solver_factory.reset(new SolverFactory<GradientProjectionMethodSolver>(params, limiter_params, task_stack_controller));
+            solver_factory.reset(new SolverFactory<GradientProjectionMethodSolver>(params, limiter_params,
+                                                                                   task_stack_controller));
             break;
         case STACK_OF_TASKS:
             solver_factory.reset(new SolverFactory<StackOfTasksSolver>(params, limiter_params, task_stack_controller));
@@ -109,8 +112,8 @@ bool ConstraintSolverFactory::getSolverFactory(const TwistControllerParams& para
             solver_factory.reset(new SolverFactory<TaskPrioritySolver>(params, limiter_params, task_stack_controller));
             break;
         default:
-            ROS_ERROR("Returning NULL factory due to constraint solver creation error. There is no solver method for %d implemented.",
-                      params.solver);
+            ROS_ERROR("Returning NULL factory due to constraint solver creation error. "
+                      "There is no solver method for %d implemented.", params.solver);
             return false;
     }
 
@@ -138,7 +141,8 @@ int8_t ConstraintSolverFactory::resetAll(const TwistControllerParams& params, co
         ROS_DEBUG_STREAM((*it)->getTaskId());
     }
 
-    if (!ConstraintSolverFactory::getSolverFactory(params, limiter_params, this->solver_factory_, this->task_stack_controller_))
+    if (!ConstraintSolverFactory::getSolverFactory(params, limiter_params, this->solver_factory_,
+                                                   this->task_stack_controller_))
     {
         return -2;
     }

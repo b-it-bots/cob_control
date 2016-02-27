@@ -94,7 +94,8 @@ class PriorityBase
         virtual Eigen::MatrixXd getTaskJacobian() const = 0;
         virtual Eigen::VectorXd getTaskDerivatives() const = 0;
 
-        virtual void update(const JointStates& joint_states, const KDL::JntArrayVel& joints_prediction, const Matrix6Xd_t& jacobian_data) = 0;
+        virtual void update(const JointStates& joint_states, const KDL::JntArrayVel& joints_prediction,
+                            const Matrix6Xd_t& jacobian_data) = 0;
         virtual void calculate() = 0;
         virtual double getValue() const = 0;
         virtual double getDerivativeValue() const = 0;
@@ -175,9 +176,11 @@ class ConstraintBase : public PriorityBase<PRIO>
             return Eigen::VectorXd::Zero(1, 1);
         }
 
-        virtual void update(const JointStates& joint_states, const KDL::JntArrayVel& joints_prediction, const Matrix6Xd_t& jacobian_data)
+        virtual void update(const JointStates& joint_states, const KDL::JntArrayVel& joints_prediction,
+                            const Matrix6Xd_t& jacobian_data)
         {
-            // ROS_INFO_STREAM("ConstraintBase::update: joint_states.current_q_.rows: " << joint_states.current_q_.rows());
+            // ROS_INFO_STREAM("ConstraintBase::update: joint_states.current_q_.rows: " <<
+            // joint_states.current_q_.rows());
             // ROS_INFO_STREAM("ConstraintBase::update: joints_prediction.q.rows: " << joints_prediction.q.rows());
             // ROS_INFO_STREAM("ConstraintBase::update: jacobian_data.cols: " << jacobian_data.cols());
 

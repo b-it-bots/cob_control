@@ -42,7 +42,8 @@ Eigen::MatrixXd WeightedLeastNormSolver::solve(const Vector6d_t& in_cart_velocit
     Eigen::MatrixXd root_W_WLN =  W_WLN.cwiseSqrt();            // element-wise sqrt -> ok because diag matrix W^(1/2)
     Eigen::MatrixXd inv_root_W_WLN =  root_W_WLN.inverse();     // -> W^(-1/2)
 
-    // SVD of JLA weighted Jacobian: Damping will be done later in calculatePinvJacobianBySVD for pseudo-inverse Jacobian with additional truncation etc.
+    // SVD of JLA weighted Jacobian: Damping will be done later in calculatePinvJacobianBySVD for
+    // pseudo-inverse Jacobian with additional truncation etc.
     Eigen::MatrixXd weighted_jacobian = this->jacobian_data_ * inv_root_W_WLN;
     Eigen::MatrixXd pinv = pinv_calc_.calculate(this->params_, this->damping_, weighted_jacobian);
 

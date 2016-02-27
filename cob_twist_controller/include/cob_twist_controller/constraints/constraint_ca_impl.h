@@ -119,7 +119,8 @@ void CollisionAvoidance<T_PARAMS, PRIO>::calculate()
 
     if (this->state_.getCurrent() == CRITICAL && pred_min_dist < crit_min_distance)
     {
-        ROS_WARN_STREAM(this->getTaskId() << ": Current state is CRITICAL but prediction " << pred_min_dist << " is smaller than current dist " << crit_min_distance << " -> Stay in CRIT.");
+        ROS_WARN_STREAM(this->getTaskId() << ": Current state is CRITICAL but prediction " << pred_min_dist <<
+                            " is smaller than current dist " << crit_min_distance << " -> Stay in CRIT.");
     }
     else if (crit_min_distance < critical || pred_min_dist < critical)
     {
@@ -149,7 +150,8 @@ double CollisionAvoidance<T_PARAMS, PRIO>::getActivationGain(double current_cost
     }
     else if (current_cost_func_value < activation_buffer_region)  // activation_buffer_region == d_i
     {
-        activation_gain = 0.5 * (1.0 + cos(M_PI * (current_cost_func_value - activation) / (activation_buffer_region - activation)));
+        activation_gain = 0.5 * (1.0 + cos(M_PI * (current_cost_func_value - activation) /
+                                    (activation_buffer_region - activation)));
     }
     else
     {
@@ -191,7 +193,8 @@ double CollisionAvoidance<T_PARAMS, PRIO>::getSelfMotionMagnitude(double current
 
 /// Returns a value for k_H to weight the partial values for e.g. GPM
 template <typename T_PARAMS, typename PRIO>
-double CollisionAvoidance<T_PARAMS, PRIO>::getSelfMotionMagnitude(const Eigen::MatrixXd& particular_solution, const Eigen::MatrixXd& homogeneous_solution) const
+double CollisionAvoidance<T_PARAMS, PRIO>::getSelfMotionMagnitude(const Eigen::MatrixXd& particular_solution,
+        const Eigen::MatrixXd& homogeneous_solution) const
 {
     return 1.0;
 }
@@ -231,8 +234,10 @@ void CollisionAvoidance<T_PARAMS, PRIO>::calcValue()
         if (params.thresholds_ca.activation_with_buffer > it->min_distance)
         {
             const double activation_gain = this->getActivationGain(it->min_distance);
-            const double magnitude = std::abs(this->getSelfMotionMagnitude(it->min_distance));  // important only for task!
-            double value = activation_gain * magnitude * pow(it->min_distance - params.thresholds_ca.activation_with_buffer, 2.0);
+            // important only for task!
+            const double magnitude = std::abs(this->getSelfMotionMagnitude(it->min_distance));
+            double value = activation_gain * magnitude *
+                                pow(it->min_distance - params.thresholds_ca.activation_with_buffer, 2.0);
             relevant_values.push_back(value);
         }
     }
@@ -329,14 +334,16 @@ void CollisionAvoidance<T_PARAMS, PRIO>::calcPartialValues()
 
                 double vec_norm = distance_vec.norm();
                 vec_norm = (vec_norm > 0.0) ? vec_norm : DIV0_SAFE;
-                Eigen::VectorXd term_2nd = (m_transl.transpose()) * (distance_vec / vec_norm);  // use the unit vector only for direction!
+                // use the unit vector only for direction!
+                Eigen::VectorXd term_2nd = (m_transl.transpose()) * (distance_vec / vec_norm);
 
                 // Gradient of the cost function from: Strasse O., Escande A., Mansard N. et al.
-                // "Real-Time (Self)-Collision Avoidance Task on a HRP-2 Humanoid Robot", 2008 IEEE International Conference
+                // "Real-Time (Self)-Collision Avoidance Task on a HRP-2 Humanoid Robot", 2008 IEEE Intern. Conf.
                 const double denom = it->min_distance > 0.0 ? it->min_distance : DIV0_SAFE;
                 const double activation_gain = this->getActivationGain(it->min_distance);
                 const double magnitude = this->getSelfMotionMagnitude(it->min_distance);
-                partial_values = (2.0 * ((it->min_distance - params.thresholds_ca.activation_with_buffer) / denom) * term_2nd);
+                partial_values = (2.0 * ((it->min_distance - params.thresholds_ca.activation_with_buffer) / denom) *
+                                    term_2nd);
                 // only consider the gain for the partial values, because of GPM, not for the task jacobian!
                 sum_partial_values += (activation_gain * magnitude * partial_values);
                 vec_partial_values.push_back(partial_values);
@@ -348,7 +355,8 @@ void CollisionAvoidance<T_PARAMS, PRIO>::calcPartialValues()
         }
         else
         {
-            // ROS_INFO_STREAM("min_dist not within activation_buffer: " << params.thresholds_ca.activation_with_buffer << " <= " << it->min_distance);
+            // ROS_INFO_STREAM("min_dist not within activation_buffer: " <<
+            // params.thresholds_ca.activation_with_buffer << " <= " << it->min_distance);
         }
     }
     // ROS_INFO_STREAM("Done all distances");
@@ -389,10 +397,12 @@ void CollisionAvoidance<T_PARAMS, PRIO>::calcPredictionValue()
     {
         if (this->constraint_params_.current_distances_.size() > 0)
         {
-            uint32_t frame_number = (str_it - params.frame_names.begin()) + 1;  // segment nr not index represents frame number
+            // segment nr not index represents frame number
+            uint32_t frame_number = (str_it - params.frame_names.begin()) + 1;
             KDL::FrameVel frame_vel;
 
-            // ToDo: the fk_solver_vel_ is only initialized for the primary chain - kinematic extensions cannot be considered yet!
+            // ToDo: the fk_solver_vel_ is only initialized for the primary chain
+            // kinematic extensions cannot be considered yet!
             KDL::JntArrayVel jnts_prediction_chain(params.dof);
             for (unsigned int i = 0; i < params.dof; i++)
             {
@@ -427,7 +437,8 @@ void CollisionAvoidance<T_PARAMS, PRIO>::calcPredictionValue()
                 }
             }
 
-            Eigen::Vector3d delta_pred_vel = pred_twist_vel + pred_twist_rot.cross(critical_data.nearest_point_frame_vector);
+            Eigen::Vector3d delta_pred_vel = pred_twist_vel +
+                                             pred_twist_rot.cross(critical_data.nearest_point_frame_vector);
             Eigen::Vector3d pred_pos = critical_data.nearest_point_frame_vector + delta_pred_vel * cycle;
             this->prediction_value_ = (critical_data.nearest_point_obstacle_vector - pred_pos).norm();
         }

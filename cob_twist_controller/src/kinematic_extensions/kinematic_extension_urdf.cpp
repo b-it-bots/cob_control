@@ -32,7 +32,7 @@
 #include <eigen_conversions/eigen_kdl.h>
 #include "cob_twist_controller/kinematic_extensions/kinematic_extension_urdf.h"
 
-/* BEGIN KinematicExtensionURDF ********************************************************************************************/
+/* BEGIN KinematicExtensionURDF ***************************************************************************************/
 bool KinematicExtensionURDF::initExtension()
 {
     /// parse robot_description and generate KDL chains
@@ -136,10 +136,12 @@ KDL::Jacobian KinematicExtensionURDF::adjustJacobian(const KDL::Jacobian& jac_ch
         try
         {
             ros::Time now = ros::Time::now();
-            tf_listener_.waitForTransform(chain_.getSegment(i).getName(), params_.chain_tip_link, now, ros::Duration(0.5));
+            tf_listener_.waitForTransform(chain_.getSegment(i).getName(), params_.chain_tip_link, now,
+                                          ros::Duration(0.5));
             tf_listener_.lookupTransform(chain_.getSegment(i).getName(), params_.chain_tip_link,  now, eb_transform_ct);
 
-            tf_listener_.waitForTransform(params_.chain_base_link, chain_.getSegment(i).getName(), now, ros::Duration(0.5));
+            tf_listener_.waitForTransform(params_.chain_base_link, chain_.getSegment(i).getName(), now,
+                                          ros::Duration(0.5));
             tf_listener_.lookupTransform(params_.chain_base_link, chain_.getSegment(i).getName(), now, cb_transform_eb);
         }
         catch (tf::TransformException& ex)
@@ -147,11 +149,21 @@ KDL::Jacobian KinematicExtensionURDF::adjustJacobian(const KDL::Jacobian& jac_ch
             ROS_ERROR("%s", ex.what());
         }
 
-        eb_frame_ct.p = KDL::Vector(eb_transform_ct.getOrigin().x(), eb_transform_ct.getOrigin().y(), eb_transform_ct.getOrigin().z());
-        eb_frame_ct.M = KDL::Rotation::Quaternion(eb_transform_ct.getRotation().x(), eb_transform_ct.getRotation().y(), eb_transform_ct.getRotation().z(), eb_transform_ct.getRotation().w());
+        eb_frame_ct.p = KDL::Vector(eb_transform_ct.getOrigin().x(),
+                                    eb_transform_ct.getOrigin().y(),
+                                    eb_transform_ct.getOrigin().z());
+        eb_frame_ct.M = KDL::Rotation::Quaternion(eb_transform_ct.getRotation().x(),
+                                                  eb_transform_ct.getRotation().y(),
+                                                  eb_transform_ct.getRotation().z(),
+                                                  eb_transform_ct.getRotation().w());
 
-        cb_frame_eb.p = KDL::Vector(cb_transform_eb.getOrigin().x(), cb_transform_eb.getOrigin().y(), cb_transform_eb.getOrigin().z());
-        cb_frame_eb.M = KDL::Rotation::Quaternion(cb_transform_eb.getRotation().x(), cb_transform_eb.getRotation().y(), cb_transform_eb.getRotation().z(), cb_transform_eb.getRotation().w());
+        cb_frame_eb.p = KDL::Vector(cb_transform_eb.getOrigin().x(),
+                                    cb_transform_eb.getOrigin().y(),
+                                    cb_transform_eb.getOrigin().z());
+        cb_frame_eb.M = KDL::Rotation::Quaternion(cb_transform_eb.getRotation().x(),
+                                                  cb_transform_eb.getRotation().y(),
+                                                  cb_transform_eb.getRotation().z(),
+                                                  cb_transform_eb.getRotation().w());
 
         // rotation from base_frame of primary chain to base_frame of extension (eb)
         Eigen::Quaterniond quat_cb;
@@ -260,4 +272,4 @@ void KinematicExtensionURDF::jointstateCallback(const sensor_msgs::JointState::C
     this->joint_states_.current_q_ = q_temp;
     this->joint_states_.current_q_dot_ = q_dot_temp;
 }
-/* END KinematicExtensionURDF ********************************************************************************************/
+/* END KinematicExtensionURDF *****************************************************************************************/

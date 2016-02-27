@@ -52,7 +52,8 @@ bool CallbackDataMediator::fill(ConstraintParamsCA& params_ca)
     {
         if (it->first == params_ca.id_)  // select the appropriate distances for frame id of interest
         {
-            params_ca.current_distances_ = it->second;  // copy all distances for frame to current distances of param struct
+            // copy all distances for frame to current distances of param struct
+            params_ca.current_distances_ = it->second;
             success = true;
         }
     }
@@ -71,7 +72,9 @@ void CallbackDataMediator::distancesToObstaclesCallback(const cob_obstacle_dista
 {
     boost::mutex::scoped_lock lock(distances_to_obstacles_lock_);
     this->obstacle_distances_.clear();
-    for (cob_obstacle_distance::ObstacleDistances::_distances_type::const_iterator it = msg->distances.begin(); it != msg->distances.end(); it++)
+    for (cob_obstacle_distance::ObstacleDistances::_distances_type::const_iterator it = msg->distances.begin();
+         it != msg->distances.end();
+         it++)
     {
         ObstacleDistanceData d;
         d.min_distance = it->distance;

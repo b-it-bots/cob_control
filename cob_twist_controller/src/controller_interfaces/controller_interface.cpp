@@ -28,7 +28,7 @@
 
 #include "cob_twist_controller/controller_interfaces/controller_interface.h"
 
-/* BEGIN ControllerInterfaceBuilder *****************************************************************************************/
+/* BEGIN ControllerInterfaceBuilder ***********************************************************************************/
 /**
  * Static builder method to create controller interface based on given parameterization.
  */
@@ -52,16 +52,17 @@ ControllerInterfaceBase* ControllerInterfaceBuilder::createControllerInterface(r
             ib = new ControllerInterfaceJointStates(nh, params, joint_states);
             break;
         default:
-            ROS_ERROR("ControllerInterface %d not defined! Using default: 'VELOCITY_INTERFACE'!", params.controller_interface);
+            ROS_ERROR("ControllerInterface %d not defined! Using default: 'VELOCITY_INTERFACE'!",
+                      params.controller_interface);
             ib = new ControllerInterfaceVelocity(nh, params);
             break;
     }
 
     return ib;
 }
-/* END ControllerInterfaceBuilder *******************************************************************************************/
+/* END ControllerInterfaceBuilder *************************************************************************************/
 
-/* BEGIN ControllerInterfaceVelocity ********************************************************************************************/
+/* BEGIN ControllerInterfaceVelocity **********************************************************************************/
 /**
  * Method processing the result by publishing to the 'joint_group_velocity_controller/command' topic.
  */
@@ -77,10 +78,10 @@ inline void ControllerInterfaceVelocity::processResult(const KDL::JntArray& q_do
 
     pub_.publish(vel_msg);
 }
-/* END ControllerInterfaceVelocity **********************************************************************************************/
+/* END ControllerInterfaceVelocity ************************************************************************************/
 
 
-/* BEGIN ControllerInterfacePosition ****************************************************************************************/
+/* BEGIN ControllerInterfacePosition **********************************************************************************/
 /**
  * Method processing the result using integration method (Simpson) and publishing to the 'joint_group_position_controller/command' topic.
  */
@@ -95,10 +96,10 @@ inline void ControllerInterfacePosition::processResult(const KDL::JntArray& q_do
         pub_.publish(pos_msg);
     }
 }
-/* END ControllerInterfacePosition ******************************************************************************************/
+/* END ControllerInterfacePosition ************************************************************************************/
 
 
-/* BEGIN ControllerInterfaceTrajectory ****************************************************************************************/
+/* BEGIN ControllerInterfaceTrajectory ********************************************************************************/
 /**
  * Method processing the result using integration method (Simpson) and publishing to the 'joint_trajectory_controller/command' topic.
  */
@@ -123,10 +124,10 @@ inline void ControllerInterfaceTrajectory::processResult(const KDL::JntArray& q_
         pub_.publish(traj_msg);
     }
 }
-/* END ControllerInterfaceTrajectory ******************************************************************************************/
+/* END ControllerInterfaceTrajectory **********************************************************************************/
 
 
-/* BEGIN ControllerInterfaceJointStates ****************************************************************************************/
+/* BEGIN ControllerInterfaceJointStates *******************************************************************************/
 /**
  * Method processing the result using integration method (Simpson) updating the internal JointState.
  */
@@ -154,4 +155,4 @@ void ControllerInterfaceJointStates::publishJointState(const ros::TimerEvent& ev
     pub_.publish(js_msg_);
 }
 
-/* END ControllerInterfaceJointStates ******************************************************************************************/
+/* END ControllerInterfaceJointStates *********************************************************************************/

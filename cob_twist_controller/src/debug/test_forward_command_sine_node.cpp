@@ -1,3 +1,31 @@
+/*!
+ *****************************************************************
+ * \file
+ *
+ * \note
+ *   Copyright (c) 2014 \n
+ *   Fraunhofer Institute for Manufacturing Engineering
+ *   and Automation (IPA) \n\n
+ *
+ *****************************************************************
+ *
+ * \note
+ *   Project name: care-o-bot
+ * \note
+ *   ROS stack name: cob_control
+ * \note
+ *   ROS package name: cob_twist_controller
+ *
+ * \author
+ *   Author: Felix Messmer, email: Felix.Messmer@ipa.fraunhofer.de
+ *
+ * \date Date of creation: September, 2015
+ *
+ * \brief
+ *   Debug node for publishing various information based on current JointState
+ *
+ ****************************************************************/
+
 #include <vector>
 #include <string>
 
@@ -12,7 +40,8 @@ public:
         dof_ = 2;
         idx_ = 1;
 
-        output_pub_ = nh_.advertise<std_msgs::Float64MultiArray>("/torso/joint_group_interpol_position_controller/command", 1);
+        output_pub_ = nh_.advertise<std_msgs::Float64MultiArray>
+                            ("/torso/joint_group_interpol_position_controller/command", 1);
 
         ros::Duration(1.0).sleep();
     }
@@ -30,7 +59,7 @@ public:
         double x = 0.0;
 
         double a = 0.6, b = 0.4, c = 0, d = 0;      // torso_2dof
-        
+
         std_msgs::Float64MultiArray command_msg;
         command_msg.data.assign(dof_, 0.0);
 
@@ -38,13 +67,13 @@ public:
         {
             time = ros::Time::now();
             x = (time - start_time).toSec();
-            
+
             double vel = a*sin(b*x+c) + d;
-            
+
             command_msg.data[idx_] = vel;
-            
+
             output_pub_.publish(command_msg);
-            
+
             ros::spinOnce();
             r.sleep();
         }

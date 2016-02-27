@@ -60,7 +60,8 @@ public:
      * kinematics for
      *
      */
-    InverseDifferentialKinematicsSolver(const TwistControllerParams& params, const KDL::Chain& chain, CallbackDataMediator& data_mediator) :
+    InverseDifferentialKinematicsSolver(const TwistControllerParams& params, const KDL::Chain& chain,
+                                        CallbackDataMediator& data_mediator) :
         params_(params),
         limiter_params_(params_.limiter_params),
         chain_(chain),

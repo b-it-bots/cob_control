@@ -1,3 +1,31 @@
+/*!
+ *****************************************************************
+ * \file
+ *
+ * \note
+ *   Copyright (c) 2014 \n
+ *   Fraunhofer Institute for Manufacturing Engineering
+ *   and Automation (IPA) \n\n
+ *
+ *****************************************************************
+ *
+ * \note
+ *   Project name: care-o-bot
+ * \note
+ *   ROS stack name: cob_control
+ * \note
+ *   ROS package name: cob_twist_controller
+ *
+ * \author
+ *   Author: Felix Messmer, email: Felix.Messmer@ipa.fraunhofer.de
+ *
+ * \date Date of creation: September, 2015
+ *
+ * \brief
+ *   Debug node for publishing various information based on current JointState
+ *
+ ****************************************************************/
+
 #include <string>
 #include <ros/ros.h>
 #include <std_msgs/Float64.h>

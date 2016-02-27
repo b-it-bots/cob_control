@@ -69,7 +69,8 @@ bool CobTwistController::initialize()
     // links of the chain to be considered for collision avoidance
     if (!nh_twist.getParam("collision_check_links", twist_controller_params_.collision_check_links))
     {
-        ROS_WARN_STREAM("Parameter 'collision_check_links' not set. Collision Avoidance constraint will not do anything.");
+        ROS_WARN_STREAM("Parameter 'collision_check_links' not set. "
+                        "Collision Avoidance constraint will not do anything.");
         twist_controller_params_.collision_check_links.clear();
     }
 
@@ -98,13 +99,17 @@ bool CobTwistController::initialize()
 
     for (uint16_t i = 0; i < twist_controller_params_.dof; i++)
     {
-        twist_controller_params_.limiter_params.limits_min.push_back(model.getJoint(twist_controller_params_.joints[i])->limits->lower);
-        twist_controller_params_.limiter_params.limits_max.push_back(model.getJoint(twist_controller_params_.joints[i])->limits->upper);
-        twist_controller_params_.limiter_params.limits_vel.push_back(model.getJoint(twist_controller_params_.joints[i])->limits->velocity);
+        twist_controller_params_.limiter_params.limits_min.push_back
+                (model.getJoint(twist_controller_params_.joints[i])->limits->lower);
+        twist_controller_params_.limiter_params.limits_max.push_back
+                (model.getJoint(twist_controller_params_.joints[i])->limits->upper);
+        twist_controller_params_.limiter_params.limits_vel.push_back
+                (model.getJoint(twist_controller_params_.joints[i])->limits->velocity);
     }
 
     // Currently not supported yet
-    if ((!nh_twist.getParam("limits_acc", twist_controller_params_.limiter_params.limits_acc)) || (twist_controller_params_.limiter_params.limits_acc.size() != twist_controller_params_.dof))
+    if ((!nh_twist.getParam("limits_acc", twist_controller_params_.limiter_params.limits_acc)) ||
+        (twist_controller_params_.limiter_params.limits_acc.size() != twist_controller_params_.dof))
     {
         // ROS_ERROR("Parameter 'limits_acc' not set or dimensions do not match! Not limiting acceleration!");
         for (uint16_t i = 0; i < twist_controller_params_.dof; i++)
@@ -146,11 +151,13 @@ bool CobTwistController::initialize()
     register_link_client_.waitForExistence(ros::Duration(5.0));
 
     /// initialize configuration control solver
-    p_inv_diff_kin_solver_.reset(new InverseDifferentialKinematicsSolver(twist_controller_params_, chain_, callback_data_mediator_));
+    p_inv_diff_kin_solver_.reset(new InverseDifferentialKinematicsSolver(twist_controller_params_, chain_,
+                                 callback_data_mediator_));
     p_inv_diff_kin_solver_->resetAll(twist_controller_params_);
 
     /// Setting up dynamic_reconfigure server for the TwistControlerConfig parameters
-    reconfigure_server_.reset(new dynamic_reconfigure::Server<cob_twist_controller::TwistControllerConfig>(reconfig_mutex_, nh_twist));
+    reconfigure_server_.reset(new dynamic_reconfigure::Server<cob_twist_controller::TwistControllerConfig>
+                              (reconfig_mutex_, nh_twist));
     reconfigure_server_->setCallback(boost::bind(&CobTwistController::reconfigureCallback,   this, _1, _2));
 
     /// initialize variables and current joint values and velocities
@@ -163,14 +170,17 @@ bool CobTwistController::initialize()
     ros::Duration(1.0).sleep();
 
     /// initialize ROS interfaces
-    obstacle_distance_sub_ = nh_.subscribe("obstacle_distance", 1, &CallbackDataMediator::distancesToObstaclesCallback, &callback_data_mediator_);
+    obstacle_distance_sub_ = nh_.subscribe("obstacle_distance", 1, &CallbackDataMediator::distancesToObstaclesCallback,
+                                           &callback_data_mediator_);
     jointstate_sub_ = nh_.subscribe("joint_states", 1, &CobTwistController::jointstateCallback, this);
     twist_sub_ = nh_twist.subscribe("command_twist", 1, &CobTwistController::twistCallback, this);
-    twist_stamped_sub_ = nh_twist.subscribe("command_twist_stamped", 1, &CobTwistController::twistStampedCallback, this);
+    twist_stamped_sub_ = nh_twist.subscribe("command_twist_stamped", 1, &CobTwistController::twistStampedCallback,
+                                            this);
 
     odometry_sub_ = nh_.subscribe("base/odometry", 1, &CobTwistController::odometryCallback, this);
 
-    this->controller_interface_.reset(ControllerInterfaceBuilder::createControllerInterface(this->nh_, this->twist_controller_params_, this->joint_states_));
+    this->controller_interface_.reset(ControllerInterfaceBuilder::createControllerInterface(this->nh_,
+                                                            this->twist_controller_params_, this->joint_states_));
 
     /// publisher for visualizing current twist direction
     twist_direction_pub_ = nh_.advertise<visualization_msgs::MarkerArray>("twist_direction", 1);
@@ -182,7 +192,8 @@ bool CobTwistController::initialize()
 void CobTwistController::reinitServiceRegistration()
 {
     ROS_WARN_COND(twist_controller_params_.collision_check_links.size() <= 0,
-                  "No collision_check_links set for this chain. Nothing will be registered. Ensure parameters are set correctly.");
+                  "No collision_check_links set for this chain. Nothing will be registered. "
+                  "Ensure parameters are set correctly.");
 
     for (std::vector<std::string>::const_iterator it = twist_controller_params_.collision_check_links.begin();
          it != twist_controller_params_.collision_check_links.end();
@@ -193,7 +204,8 @@ void CobTwistController::reinitServiceRegistration()
         r.request.data = *it;
         if (register_link_client_.call(r))
         {
-            ROS_INFO_STREAM("Called registration service with success: " << int(r.response.success) << ". Got message: " << r.response.message);
+            ROS_INFO_STREAM("Called registration service with success: " << int(r.response.success) <<
+                            ". Got message: " << r.response.message);
         }
         else
         {
@@ -227,7 +239,8 @@ void CobTwistController::reconfigureCallback(cob_twist_controller::TwistControll
     const double activation_buffer_jla_in_percent = config.activation_buffer_jla;
     const double critical_jla_in_percent = config.critical_threshold_jla;
     twist_controller_params_.thresholds_jla.activation =  activation_jla_in_percent / 100.0;
-    twist_controller_params_.thresholds_jla.activation_with_buffer = twist_controller_params_.thresholds_jla.activation * (1.0 + activation_buffer_jla_in_percent / 100.0);
+    twist_controller_params_.thresholds_jla.activation_with_buffer =
+                twist_controller_params_.thresholds_jla.activation * (1.0 + activation_buffer_jla_in_percent / 100.0);
     twist_controller_params_.thresholds_jla.critical =  critical_jla_in_percent / 100.0;
     twist_controller_params_.damping_jla = config.damping_jla;
 
@@ -236,7 +249,8 @@ void CobTwistController::reconfigureCallback(cob_twist_controller::TwistControll
     twist_controller_params_.k_H_ca = config.k_H_ca;
     const double activaton_buffer_ca_in_percent = config.activation_buffer_ca;
     twist_controller_params_.thresholds_ca.activation = config.activation_threshold_ca;  // in [m]
-    twist_controller_params_.thresholds_ca.activation_with_buffer = twist_controller_params_.thresholds_ca.activation * (1.0 + activaton_buffer_ca_in_percent / 100.0);
+    twist_controller_params_.thresholds_ca.activation_with_buffer =
+                twist_controller_params_.thresholds_ca.activation * (1.0 + activaton_buffer_ca_in_percent / 100.0);
     twist_controller_params_.thresholds_ca.critical = config.critical_threshold_ca;  // in [m]
     twist_controller_params_.damping_ca = config.damping_ca;
 
@@ -253,7 +267,8 @@ void CobTwistController::reconfigureCallback(cob_twist_controller::TwistControll
     twist_controller_params_.kinematic_extension = static_cast<KinematicExtensionTypes>(config.kinematic_extension);
     twist_controller_params_.extension_ratio = config.extension_ratio;
 
-    this->controller_interface_.reset(ControllerInterfaceBuilder::createControllerInterface(this->nh_, this->twist_controller_params_, this->joint_states_));
+    this->controller_interface_.reset(ControllerInterfaceBuilder::createControllerInterface(this->nh_,
+                                                                this->twist_controller_params_, this->joint_states_));
 
     p_inv_diff_kin_solver_->resetAll(this->twist_controller_params_);
 
@@ -283,7 +298,8 @@ void CobTwistController::checkSolverAndConstraints(cob_twist_controller::TwistCo
 
     if (WLN == solver && CA_OFF != ct_ca)
     {
-        ROS_ERROR("The WLN solution doesn\'t support collision avoidance. Currently WLN is only implemented for Identity and JLA ...");
+        ROS_ERROR("The WLN solution doesn\'t support collision avoidance. "
+                  "Currently WLN is only implemented for Identity and JLA ...");
         twist_controller_params_.constraint_ca = CA_OFF;
         config.constraint_ca = static_cast<int>(twist_controller_params_.constraint_ca);
         warning = true;
@@ -291,13 +307,15 @@ void CobTwistController::checkSolverAndConstraints(cob_twist_controller::TwistCo
 
     if (GPM == solver && CA_OFF == ct_ca && JLA_OFF == ct_jla)
     {
-        ROS_ERROR("You have chosen GPM but without constraints! The behaviour without constraints will be the same like for DEFAULT_SOLVER.");
+        ROS_ERROR("You have chosen GPM but without constraints! "
+                  "The behaviour without constraints will be the same like for DEFAULT_SOLVER.");
         warning = true;
     }
 
     if (TASK_2ND_PRIO == solver && (JLA_ON == ct_jla || CA_OFF == ct_ca))
     {
-        ROS_ERROR("The projection of a task into the null space of the main EE task is currently only for the CA constraint supported!");
+        ROS_ERROR("The projection of a task into the null space of the main EE task is currently only for the "
+                  "CA constraint supported!");
         twist_controller_params_.constraint_jla = JLA_OFF;
         twist_controller_params_.constraint_ca = CA_ON;
         config.constraint_jla = static_cast<int>(twist_controller_params_.constraint_jla);
@@ -317,7 +335,8 @@ void CobTwistController::checkSolverAndConstraints(cob_twist_controller::TwistCo
 
     if (twist_controller_params_.limiter_params.limits_tolerance <= DIV0_SAFE)
     {
-        ROS_ERROR("The limits_tolerance for enforce limits is smaller than DIV/0 threshold. Therefore both enforce_limits are set to false!");
+        ROS_ERROR("The limits_tolerance for enforce limits is smaller than DIV/0 threshold. "
+                  "Therefore both enforce_limits are set to false!");
         twist_controller_params_.limiter_params.enforce_pos_limits = config.enforce_pos_limits = false;
         twist_controller_params_.limiter_params.enforce_vel_limits = config.enforce_vel_limits = false;
         twist_controller_params_.limiter_params.enforce_acc_limits = config.enforce_acc_limits = false;
@@ -326,7 +345,9 @@ void CobTwistController::checkSolverAndConstraints(cob_twist_controller::TwistCo
     if (CA_OFF != ct_ca && ket != NO_EXTENSION)
     {
         ROS_ERROR("ToDo: CollisionAvoidance currently cannot be used together with KinematicExtensions!");
-        // This is due to a dimension conflict in ConstraintsCA! ConstraintsCA needs to be refactored (i.e. KDL::ChainFkSolverVel_recursive and KDL::ChainJntToJacSolver jnt2jac_ in InverseDifferentialKinematicsSolver)
+        // This is due to a dimension conflict in ConstraintsCA! ConstraintsCA needs to be refactored
+        // (i.e. KDL::ChainFkSolverVel_recursive and KDL::ChainJntToJacSolver jnt2jac_ in
+        // InverseDifferentialKinematicsSolver)
         twist_controller_params_.constraint_ca = CA_OFF;
         config.constraint_ca = static_cast<int>(twist_controller_params_.constraint_ca);
     }
@@ -346,8 +367,10 @@ void CobTwistController::twistStampedCallback(const geometry_msgs::TwistStamped:
 
     try
     {
-        tf_listener_.lookupTransform(twist_controller_params_.chain_base_link, msg->header.frame_id, ros::Time(0), transform_tf);
-        frame.M = KDL::Rotation::Quaternion(transform_tf.getRotation().x(), transform_tf.getRotation().y(), transform_tf.getRotation().z(), transform_tf.getRotation().w());
+        tf_listener_.lookupTransform(twist_controller_params_.chain_base_link, msg->header.frame_id, ros::Time(0),
+                                     transform_tf);
+        frame.M = KDL::Rotation::Quaternion(transform_tf.getRotation().x(), transform_tf.getRotation().y(),
+                                            transform_tf.getRotation().z(), transform_tf.getRotation().w());
     }
     catch (tf::TransformException& ex)
     {
@@ -411,7 +434,8 @@ void CobTwistController::visualizeTwist(KDL::Twist twist)
     tf::StampedTransform transform_tf;
     try
     {
-        tf_listener_.lookupTransform(twist_controller_params_.chain_base_link, tracking_frame, ros::Time(0), transform_tf);
+        tf_listener_.lookupTransform(twist_controller_params_.chain_base_link, tracking_frame, ros::Time(0),
+                                     transform_tf);
     }
     catch (tf::TransformException& ex)
     {
@@ -462,13 +486,14 @@ void CobTwistController::visualizeTwist(KDL::Twist twist)
     rot.setRPY(twist.rot.x(), twist.rot.y(), twist.rot.z());
 
     /// calculate rotation between twist-axis and z-axis of cylinder
-    tf::Vector3 z_axis = tf::Vector3(0,0,1);
+    tf::Vector3 z_axis = tf::Vector3(0, 0, 1);
     tf::Vector3 t_axis = rot.getAxis();
-    tf::Quaternion temp(0,0,0,1);
-    if(z_axis!=t_axis && z_axis!=-t_axis)
+    tf::Quaternion temp(0, 0, 0, 1);
+    if (z_axis != t_axis && z_axis != -t_axis)
     {
         tf::Vector3 cross = z_axis.cross(t_axis);
-        temp = tf::Quaternion(cross.x(), cross.y(), cross.z(), (std::sqrt(z_axis.length2() * t_axis.length2()) + z_axis.dot(t_axis)));
+        temp = tf::Quaternion(cross.x(), cross.y(), cross.z(),
+                              (std::sqrt(z_axis.length2() * t_axis.length2()) + z_axis.dot(t_axis)));
         temp = temp.normalized();
     }
     tf::quaternionTFToMsg(temp, marker_rot.pose.orientation);
@@ -526,14 +551,20 @@ void CobTwistController::odometryCallback(const nav_msgs::Odometry::ConstPtr& ms
 
     try
     {
-        tf_listener_.waitForTransform(twist_controller_params_.chain_base_link, "base_link", ros::Time(0), ros::Duration(0.5));
-        tf_listener_.lookupTransform(twist_controller_params_.chain_base_link, "base_link", ros::Time(0), cb_transform_bl);
+        tf_listener_.waitForTransform(twist_controller_params_.chain_base_link, "base_link", ros::Time(0),
+                                      ros::Duration(0.5));
+        tf_listener_.lookupTransform(twist_controller_params_.chain_base_link, "base_link", ros::Time(0),
+                                     cb_transform_bl);
 
-        tf_listener_.waitForTransform("base_link", twist_controller_params_.chain_tip_link, ros::Time(0), ros::Duration(0.5));
-        tf_listener_.lookupTransform("base_link", twist_controller_params_.chain_tip_link, ros::Time(0), bl_transform_ct);
+        tf_listener_.waitForTransform("base_link", twist_controller_params_.chain_tip_link, ros::Time(0),
+                                      ros::Duration(0.5));
+        tf_listener_.lookupTransform("base_link", twist_controller_params_.chain_tip_link, ros::Time(0),
+                                     bl_transform_ct);
 
-        cb_frame_bl.p = KDL::Vector(cb_transform_bl.getOrigin().x(), cb_transform_bl.getOrigin().y(), cb_transform_bl.getOrigin().z());
-        cb_frame_bl.M = KDL::Rotation::Quaternion(cb_transform_bl.getRotation().x(), cb_transform_bl.getRotation().y(), cb_transform_bl.getRotation().z(), cb_transform_bl.getRotation().w());
+        cb_frame_bl.p = KDL::Vector(cb_transform_bl.getOrigin().x(), cb_transform_bl.getOrigin().y(),
+                                    cb_transform_bl.getOrigin().z());
+        cb_frame_bl.M = KDL::Rotation::Quaternion(cb_transform_bl.getRotation().x(), cb_transform_bl.getRotation().y(),
+                                                  cb_transform_bl.getRotation().z(), cb_transform_bl.getRotation().w());
     }
     catch (tf::TransformException& ex)
     {
@@ -544,7 +575,8 @@ void CobTwistController::odometryCallback(const nav_msgs::Odometry::ConstPtr& ms
     try
     {
         // Calculate tangential twist for angular base movements v = w x r
-        Eigen::Vector3d r(bl_transform_ct.getOrigin().x(), bl_transform_ct.getOrigin().y(), bl_transform_ct.getOrigin().z());
+        Eigen::Vector3d r(bl_transform_ct.getOrigin().x(), bl_transform_ct.getOrigin().y(),
+                          bl_transform_ct.getOrigin().z());
         Eigen::Vector3d w(0, 0, msg->twist.twist.angular.z);
         Eigen::Vector3d res = w.cross(r);
         tangential_twist_bl.vel = KDL::Vector(res(0), res(1), res(2));

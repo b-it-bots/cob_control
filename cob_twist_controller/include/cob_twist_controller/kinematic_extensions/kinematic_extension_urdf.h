@@ -42,7 +42,7 @@
 
 #include "cob_twist_controller/kinematic_extensions/kinematic_extension_base.h"
 
-/* BEGIN KinematicExtensionURDF ****************************************************************************************/
+/* BEGIN KinematicExtensionURDF ***************************************************************************************/
 /// Abstract Helper Class to be used for Cartesian KinematicExtensions based on URDF.
 class KinematicExtensionURDF : public KinematicExtensionBase
 {
@@ -76,10 +76,10 @@ class KinematicExtensionURDF : public KinematicExtensionBase
         std::vector<double> limits_vel_;
         std::vector<double> limits_acc_;
 };
-/* END KinematicExtensionURDF **********************************************************************************************/
+/* END KinematicExtensionURDF *****************************************************************************************/
 
 
-/* BEGIN KinematicExtensionTorso ****************************************************************************************/
+/* BEGIN KinematicExtensionTorso **************************************************************************************/
 /// Class implementing a KinematicExtension for Torso based on URDF.
 class KinematicExtensionTorso : public KinematicExtensionURDF
 {
@@ -95,12 +95,14 @@ class KinematicExtensionTorso : public KinematicExtensionURDF
                 ROS_ERROR("Initialization failed");
             }
 
-            joint_state_sub_ = nh_.subscribe("/torso/joint_states", 1, &KinematicExtensionURDF::jointstateCallback, dynamic_cast<KinematicExtensionURDF*>(this));
-            command_pub_ = nh_.advertise<std_msgs::Float64MultiArray>("/torso/joint_group_interpol_position_controller/command", 1);
+            joint_state_sub_ = nh_.subscribe("/torso/joint_states", 1, &KinematicExtensionURDF::jointstateCallback,
+                                             dynamic_cast<KinematicExtensionURDF*>(this));
+            command_pub_ = nh_.advertise<std_msgs::Float64MultiArray>
+                                ("/torso/joint_group_interpol_position_controller/command", 1);
         }
 
         ~KinematicExtensionTorso() {}
 };
-/* END KinematicExtensionTorso **********************************************************************************************/
+/* END KinematicExtensionTorso ****************************************************************************************/
 
 #endif  // COB_TWIST_CONTROLLER_KINEMATIC_EXTENSIONS_KINEMATIC_EXTENSION_URDF_H

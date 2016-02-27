@@ -71,11 +71,14 @@ class SmmDeterminatorVelocityBounds : public SelfMotionMagnitudeDeterminatorBase
         {}
 
         /// Implementation of SMM. Formula: See header comment!
-        virtual double calculate(const LimiterParams& params, const Eigen::MatrixXd& particular_solution, const Eigen::MatrixXd& homogeneous_solution) const
+        virtual double calculate(const LimiterParams& params, const Eigen::MatrixXd& particular_solution,
+                                 const Eigen::MatrixXd& homogeneous_solution) const
         {
-            if (params.limits_vel.size() != homogeneous_solution.rows() || params.limits_vel.size() != particular_solution.rows())
+            if (params.limits_vel.size() != homogeneous_solution.rows() ||
+                params.limits_vel.size() != particular_solution.rows())
             {
-                ROS_ERROR("Count of rows do not match for particular solution, homogeneous solution and vector limits.");
+                ROS_ERROR("Count of rows do not match for particular solution, "
+                          "homogeneous solution and vector limits.");
                 ROS_ERROR_STREAM("Part.Solution: " << particular_solution.rows());
                 ROS_ERROR_STREAM("Hom.Solution: " << homogeneous_solution.rows());
                 ROS_ERROR_STREAM("Vel.Lim: " << params.limits_vel.size());
@@ -119,7 +122,8 @@ class SmmDeterminatorVelocityBounds : public SelfMotionMagnitudeDeterminatorBase
             }
             else
             {
-                ROS_ERROR("The requested end-effector velocity is too high. A proper k cannot be found! Assuming MIN: -1.0 or MAX 1.0. ");
+                ROS_ERROR("The requested end-effector velocity is too high. A proper k cannot be found! "
+                          "Assuming MIN: -1.0 or MAX 1.0. ");
                 kResult = MAXIMIZE ? 1.0 : -1.0;
             }
 
