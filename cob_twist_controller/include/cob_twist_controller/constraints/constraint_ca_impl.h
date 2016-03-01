@@ -321,8 +321,10 @@ void CollisionAvoidance<T_PARAMS, PRIO>::calcPartialValues()
 
                 if (0 != this->jnt_to_jac_.JntToJac(ja, new_jac_chain, frame_number))
                 {
-                    ROS_ERROR_STREAM("Failed to calculate JntToJac. Error Code: " << this->jnt_to_jac_.getError() << " (" << this->jnt_to_jac_.strError(this->jnt_to_jac_.getError()) << ")");
-                    ROS_ERROR_STREAM("This is likely due to using a KinematicExtension! The ChainJntToJac-Solver is configured for the main chain only!");
+                    ROS_ERROR_STREAM("Failed to calculate JntToJac. Error Code: " << this->jnt_to_jac_.getError() <<
+                                     " (" << this->jnt_to_jac_.strError(this->jnt_to_jac_.getError()) << ")");
+                    ROS_ERROR_STREAM("This is likely due to using a KinematicExtension! "
+                                     "The ChainJntToJac-Solver is configured for the main chain only!");
                     return;
                 }
                 // ROS_INFO_STREAM("new_jac_chain.columns: " << new_jac_chain.columns());
@@ -417,8 +419,10 @@ void CollisionAvoidance<T_PARAMS, PRIO>::calcPredictionValue()
             int error = this->fk_solver_vel_.JntToCart(this->jnts_prediction_, frame_vel, frame_number);
             if (error != 0)
             {
-                ROS_ERROR_STREAM("Could not calculate twist for frame: " << frame_number << ". Error Code: " << error << " (" << this->fk_solver_vel_.strError(error) << ")");
-                ROS_ERROR_STREAM("This is likely due to using a KinematicExtension! The ChainFkSolverVel is configured for the main chain only!");
+                ROS_ERROR_STREAM("Could not calculate twist for frame: " << frame_number << ". Error Code: " <<
+                                 error << " (" << this->fk_solver_vel_.strError(error) << ")");
+                ROS_ERROR_STREAM("This is likely due to using a KinematicExtension! "
+                                 "The ChainFkSolverVel is configured for the main chain only!");
                 return;
             }
             // ROS_INFO_STREAM("Calculated twist for frame: " << frame_number);
