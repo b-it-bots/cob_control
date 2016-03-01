@@ -41,7 +41,8 @@
 #include "cob_twist_controller/constraint_solvers/factories/solver_factory.h"
 #include "cob_twist_controller/callback_data_mediator.h"
 
-/// Static class providing a single method for creation of damping method, solver and starting the solving of the IK problem.
+// Static class providing a single method for creation of damping method, solver and starting the solving of the
+// IK problem.
 class ConstraintSolverFactory
 {
     public:

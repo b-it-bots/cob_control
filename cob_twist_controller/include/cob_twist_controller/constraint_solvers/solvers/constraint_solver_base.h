@@ -106,7 +106,8 @@ class ConstraintSolver
         /// set inserts sorted (default less operator); if element has already been added it returns an iterator on it.
         std::set<ConstraintBase_t> constraints_;  /// Set of constraints.
         const TwistControllerParams& params_;  /// References the inv. diff. kin. solver parameters.
-        const LimiterParams& limiter_params_;  /// References the limiter parameters (up-to-date according to KinematicExtension).
+        const LimiterParams& limiter_params_;  /// References the limiter parameters (up-to-date according to
+                                               /// KinematicExtension).
         Matrix6Xd_t jacobian_data_;  /// References the current Jacobian (matrix data only).
         boost::shared_ptr<DampingBase> damping_;  /// The currently set damping method.
         PINV pinv_calc_;  /// An instance that helps solving the inverse of the Jacobian.

@@ -48,7 +48,8 @@ public:
         marker_pub_ = nh_.advertise<visualization_msgs::MarkerArray>("cartesian_controller/preview_path", 1);
     }
 
-    void transformPose(const std::string source_frame, const std::string target_frame, const geometry_msgs::Pose pose_in, geometry_msgs::Pose& pose_out);
+    void transformPose(const std::string source_frame, const std::string target_frame,
+                       const geometry_msgs::Pose pose_in, geometry_msgs::Pose& pose_out);
     tf::StampedTransform getStampedTransform(const std::string& target_frame, const std::string& source_frame);
     geometry_msgs::Pose getPose(const std::string& target_frame, const std::string& source_frame);
 

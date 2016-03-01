@@ -104,7 +104,9 @@ void InverseDifferentialKinematicsSolver::resetAll(TwistControllerParams params)
     this->limiters_->init();
 
     this->task_stack_controller_.clearAllTasks();
-    if (0 != this->constraint_solver_factory_.resetAll(this->params_, this->limiter_params_))  // params member as reference!!! else process will die!
+
+    // params member as reference!!! else process will die!
+    if (0 != this->constraint_solver_factory_.resetAll(this->params_, this->limiter_params_))
     {
         ROS_ERROR("Failed to reset IDK constraint solver after dynamic_reconfigure.");
     }

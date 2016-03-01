@@ -83,7 +83,8 @@ public:
             {
                 return -4;
             }
-            ROS_WARN_STREAM("Please create a subscriber to '" + this->nh_.getNamespace() + "/trajectory_marker' topic (Type: visualization_msgs/MarkerArray)");
+            ROS_WARN_STREAM("Please create a subscriber to '" + this->nh_.getNamespace() +
+                            "/trajectory_marker' topic (Type: visualization_msgs/MarkerArray)");
             ros::Duration(1.0).sleep();
         }
 
@@ -136,7 +137,8 @@ public:
 
         if (tf_listener_.frameExists(this->base_link_))
         {
-            if (nh_.param("twist_controller/kinematic_extension", 0) == cob_twist_controller::TwistController_BASE_ACTIVE)
+            if (nh_.param("twist_controller/kinematic_extension", 0) ==
+                cob_twist_controller::TwistController_BASE_ACTIVE)
             {
                 if (base_marker_.points.size() > 10000)
                 {

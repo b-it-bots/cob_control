@@ -32,7 +32,7 @@
 #include <cob_cartesian_controller/cartesian_controller_data_types.h>
 #include <cob_cartesian_controller/trajectory_profile_generator/trajectory_profile_generator_base.h>
 
-/* BEGIN TrajectoryProfileBuilder *****************************************************************************************/
+/* BEGIN TrajectoryProfileBuilder *************************************************************************************/
 class TrajectoryProfileBuilder
 {
 public:
@@ -41,6 +41,6 @@ public:
 
     static TrajectoryProfileBase* createProfile(const cob_cartesian_controller::CartesianActionStruct& params);
 };
-/* END TrajectoryGeneratorBuilder *******************************************************************************************/
+/* END TrajectoryGeneratorBuilder *************************************************************************************/
 
 #endif  // COB_CARTESIAN_CONTROLLER_TRAJECTORY_PROFILE_GENERATOR_TRAJECTORY_PROFILE_GENERATOR_BUILDER_H

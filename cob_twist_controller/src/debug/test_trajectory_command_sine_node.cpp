@@ -1,3 +1,31 @@
+/*!
+ *****************************************************************
+ * \file
+ *
+ * \note
+ *   Copyright (c) 2014 \n
+ *   Fraunhofer Institute for Manufacturing Engineering
+ *   and Automation (IPA) \n\n
+ *
+ *****************************************************************
+ *
+ * \note
+ *   Project name: care-o-bot
+ * \note
+ *   ROS stack name: cob_control
+ * \note
+ *   ROS package name: cob_twist_controller
+ *
+ * \author
+ *   Author: Felix Messmer, email: Felix.Messmer@ipa.fraunhofer.de
+ *
+ * \date Date of creation: September, 2015
+ *
+ * \brief
+ *   Debug node for publishing various information based on current JointState
+ *
+ ****************************************************************/
+
 #include <vector>
 #include <string>
 
@@ -33,7 +61,8 @@ public:
         output_q_dot_pub_ = nh_.advertise<std_msgs::Float64>("integrator_debug/q_dot", 1);
         output_simpson_q_pub_ = nh_.advertise<std_msgs::Float64>("integrator_debug/simpson_q", 1);
         output_euler_q_pub_ = nh_.advertise<std_msgs::Float64>("integrator_debug/euler_q", 1);
-        output_derived_simpson_q_dot_pub_ = nh_.advertise<std_msgs::Float64>("integrator_debug/derived_simpson_q_dot", 1);
+        output_derived_simpson_q_dot_pub_ = nh_.advertise<std_msgs::Float64>
+                                                ("integrator_debug/derived_simpson_q_dot", 1);
 
         ros::Duration(1.0).sleep();
     }
@@ -53,12 +82,12 @@ public:
         double x = time.toSec() - start_time.toSec();
         double old_pos = -99;
 
-        //double a = 0.6, b = 1.0, c = 0, d = 0;    // lwa4d
+        // double a = 0.6, b = 1.0, c = 0, d = 0;    // lwa4d
         double a = 0.6, b = 0.4, c = 0, d = 0;      // torso_2dof
         euler_q_(idx_) = a*sin(b*x+c) + d;          // correct initial value
 
         trajectory_msgs::JointTrajectoryPoint traj_point;
-        traj_point.positions.assign(dof_,0.0);
+        traj_point.positions.assign(dof_, 0.0);
         // traj_point.velocities.assign(dof_,0.0);
 
         std::vector<std::string> joint_names;
@@ -98,7 +127,8 @@ public:
             // traj_point.time_from_start = ros::Duration(0.5);             // should be as small as possible
             traj_point.time_from_start = ros::Duration(period.toSec());     // seems to be a good value
             // traj_point.time_from_start = ros::Duration(0.1 * period.toSec());  // does not make a difference anymore
-            ////// time_from_start should be as small as possible, however, setting it to none is not possible (trajectory point being dropped by controller due to occuring in the past)
+            // time_from_start should be as small as possible, however, setting it to none is not possible (trajectory
+            // point being dropped by controller due to occuring in the past)
 
             trajectory_msgs::JointTrajectory traj_msg;
             traj_msg.points.push_back(traj_point);

@@ -32,7 +32,7 @@
 #include <vector>
 #include <cob_cartesian_controller/trajectory_profile_generator/trajectory_profile_generator_base.h>
 
-/* BEGIN TrajectoryProfileSinoid ****************************************************************************************/
+/* BEGIN TrajectoryProfileSinoid **************************************************************************************/
 class TrajectoryProfileSinoid : public TrajectoryProfileBase
 {
 public:
@@ -46,6 +46,6 @@ public:
     virtual bool getProfileTimings(double Se, double te, bool calcMaxTe, cob_cartesian_controller::ProfileTimings& pt);
     virtual std::vector<double> getTrajectory(double se, cob_cartesian_controller::ProfileTimings pt);
 };
-/* END TrajectoryProfileSinoid **********************************************************************************************/
+/* END TrajectoryProfileSinoid ****************************************************************************************/
 
 #endif  // COB_CARTESIAN_CONTROLLER_TRAJECTORY_PROFILE_GENERATOR_TRAJECTORY_PROFILE_GENERATOR_SINOID_H

@@ -31,7 +31,7 @@
 #include <eigen_conversions/eigen_kdl.h>
 #include "cob_twist_controller/kinematic_extensions/kinematic_extension_dof.h"
 
-/* BEGIN KinematicExtensionDOF ********************************************************************************************/
+/* BEGIN KinematicExtensionDOF ****************************************************************************************/
 /**
  * Helper function adjusting the Jacobian used in inverse differential computation based on the Cartesian DoFs enabled in 'adjustJacobian()'.
  * @param jac_chain The jacobian of the primary kinematic chain.
@@ -40,7 +40,10 @@
  * @param active_dim The binary vector of active dimensions.
  * @return The extended Jacobian
  */
-KDL::Jacobian KinematicExtensionDOF::adjustJacobianDof(const KDL::Jacobian& jac_chain, const KDL::Frame eb_frame_ct, const KDL::Frame cb_frame_eb, const ActiveCartesianDimension active_dim)
+KDL::Jacobian KinematicExtensionDOF::adjustJacobianDof(const KDL::Jacobian& jac_chain,
+                                                       const KDL::Frame eb_frame_ct,
+                                                       const KDL::Frame cb_frame_eb,
+                                                       const ActiveCartesianDimension active_dim)
 {
     /// compose jac_full considering kinematical extension
     KDL::Jacobian jac_full;
@@ -139,10 +142,10 @@ KDL::Jacobian KinematicExtensionDOF::adjustJacobianDof(const KDL::Jacobian& jac_
 
     return jac_full;
 }
-/* END KinematicExtensionDOF **********************************************************************************************/
+/* END KinematicExtensionDOF ******************************************************************************************/
 
 
-/* BEGIN KinematicExtensionBaseActive ********************************************************************************************/
+/* BEGIN KinematicExtensionBaseActive *********************************************************************************/
 bool KinematicExtensionBaseActive::initExtension()
 {
     this->ext_dof_ = 6;
@@ -193,11 +196,21 @@ KDL::Jacobian KinematicExtensionBaseActive::adjustJacobian(const KDL::Jacobian& 
         ROS_ERROR("%s", ex.what());
     }
 
-    bl_frame_ct.p = KDL::Vector(bl_transform_ct.getOrigin().x(), bl_transform_ct.getOrigin().y(), bl_transform_ct.getOrigin().z());
-    bl_frame_ct.M = KDL::Rotation::Quaternion(bl_transform_ct.getRotation().x(), bl_transform_ct.getRotation().y(), bl_transform_ct.getRotation().z(), bl_transform_ct.getRotation().w());
+    bl_frame_ct.p = KDL::Vector(bl_transform_ct.getOrigin().x(),
+                                bl_transform_ct.getOrigin().y(),
+                                bl_transform_ct.getOrigin().z());
+    bl_frame_ct.M = KDL::Rotation::Quaternion(bl_transform_ct.getRotation().x(),
+                                              bl_transform_ct.getRotation().y(),
+                                              bl_transform_ct.getRotation().z(),
+                                              bl_transform_ct.getRotation().w());
 
-    cb_frame_bl.p = KDL::Vector(cb_transform_bl.getOrigin().x(), cb_transform_bl.getOrigin().y(), cb_transform_bl.getOrigin().z());
-    cb_frame_bl.M = KDL::Rotation::Quaternion(cb_transform_bl.getRotation().x(), cb_transform_bl.getRotation().y(), cb_transform_bl.getRotation().z(), cb_transform_bl.getRotation().w());
+    cb_frame_bl.p = KDL::Vector(cb_transform_bl.getOrigin().x(),
+                                cb_transform_bl.getOrigin().y(),
+                                cb_transform_bl.getOrigin().z());
+    cb_frame_bl.M = KDL::Rotation::Quaternion(cb_transform_bl.getRotation().x(),
+                                              cb_transform_bl.getRotation().y(),
+                                              cb_transform_bl.getRotation().z(),
+                                              cb_transform_bl.getRotation().w());
 
     /// active base can move in lin_x, lin_y and rot_z
     active_dim.lin_x = 1;
@@ -279,5 +292,5 @@ void KinematicExtensionBaseActive::processResultExtension(const KDL::JntArray& q
 
     base_vel_pub_.publish(base_vel_msg);
 }
-/* END KinematicExtensionBaseActive **********************************************************************************************/
+/* END KinematicExtensionBaseActive ***********************************************************************************/
 

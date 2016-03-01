@@ -44,7 +44,8 @@ geometry_msgs::Pose CartesianControllerUtils::getPose(const std::string& target_
     return pose;
 }
 
-tf::StampedTransform CartesianControllerUtils::getStampedTransform(const std::string& target_frame, const std::string& source_frame)
+tf::StampedTransform CartesianControllerUtils::getStampedTransform(const std::string& target_frame,
+                                                                   const std::string& source_frame)
 {
     tf::StampedTransform stamped_transform;
     bool transform = false;
@@ -63,12 +64,14 @@ tf::StampedTransform CartesianControllerUtils::getStampedTransform(const std::st
             ROS_ERROR("CartesianControllerUtils::getStampedTransform: \n%s", ex.what());
             ros::Duration(0.1).sleep();
         }
-    } while (!transform && ros::ok());
+    }
+    while (!transform && ros::ok());
 
     return stamped_transform;
 }
 
-void CartesianControllerUtils::transformPose(const std::string source_frame, const std::string target_frame, const geometry_msgs::Pose pose_in, geometry_msgs::Pose& pose_out)
+void CartesianControllerUtils::transformPose(const std::string source_frame, const std::string target_frame,
+                                             const geometry_msgs::Pose pose_in, geometry_msgs::Pose& pose_out)
 {
     bool transform = false;
     geometry_msgs::PoseStamped stamped_in, stamped_out;
@@ -90,7 +93,8 @@ void CartesianControllerUtils::transformPose(const std::string source_frame, con
             ROS_ERROR("CartesianControllerUtils::transformPose: \n%s", ex.what());
             ros::Duration(0.1).sleep();
         }
-    } while (!transform && ros::ok());
+    }
+    while (!transform && ros::ok());
 }
 
 
@@ -175,7 +179,8 @@ void CartesianControllerUtils::adjustArrayLength(std::vector<cob_cartesian_contr
     }
 }
 
-void CartesianControllerUtils::copyMatrix(std::vector<double>* path_array, std::vector<cob_cartesian_controller::PathArray>& m)
+void CartesianControllerUtils::copyMatrix(std::vector<double>* path_array,
+                                          std::vector<cob_cartesian_controller::PathArray>& m)
 {
     for (unsigned int i = 0; i < m.size(); i++)
     {

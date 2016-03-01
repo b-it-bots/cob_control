@@ -31,7 +31,7 @@
 #include "cob_twist_controller/kinematic_extensions/kinematic_extension_builder.h"
 
 
-/* BEGIN KinematicExtensionBuilder *****************************************************************************************/
+/* BEGIN KinematicExtensionBuilder ************************************************************************************/
 /**
  * Static builder method to create kinematic extensions based on given parameterization.
  */
@@ -65,10 +65,10 @@ KinematicExtensionBase* KinematicExtensionBuilder::createKinematicExtension(cons
 
     return keb;
 }
-/* END KinematicExtensionBuilder *******************************************************************************************/
+/* END KinematicExtensionBuilder **************************************************************************************/
 
 
-/* BEGIN KinematicExtensionNone ********************************************************************************************/
+/* BEGIN KinematicExtensionNone ***************************************************************************************/
 
 bool KinematicExtensionNone::initExtension()
 {
@@ -106,4 +106,4 @@ void KinematicExtensionNone::processResultExtension(const KDL::JntArray& q_dot_i
 {
     return;
 }
-/* END KinematicExtensionNone **********************************************************************************************/
+/* END KinematicExtensionNone *****************************************************************************************/

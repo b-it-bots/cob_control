@@ -125,7 +125,8 @@ void JointLimitAvoidance<T_PARAMS, PRIO>::calculate()
 
     if (this->state_.getCurrent() == CRITICAL && pred_rel_val < rel_val)
     {
-        ROS_WARN_STREAM(this->getTaskId() << ": Current state is CRITICAL but prediction is smaller than current rel_val -> Stay in CRIT.");
+        ROS_WARN_STREAM(this->getTaskId() << ": Current state is CRITICAL but prediction is smaller than current "
+                                             "rel_val -> Stay in CRIT.");
     }
     else if (rel_val < critical || pred_rel_val < critical)
     {
@@ -153,7 +154,8 @@ double JointLimitAvoidance<T_PARAMS, PRIO>::getActivationGain() const
     }
     else if (rel_delta < activation_buffer_region)
     {
-        activation_gain = 0.5 * (1.0 + cos(M_PI * (rel_delta - activation_threshold) / (activation_buffer_region - activation_threshold)));
+        activation_gain = 0.5 * (1.0 + cos(M_PI * (rel_delta - activation_threshold) /
+                                (activation_buffer_region - activation_threshold)));
     }
     else
     {
@@ -170,7 +172,8 @@ double JointLimitAvoidance<T_PARAMS, PRIO>::getActivationGain() const
 
 /// Returns a value for k_H to weight the partial values for e.g. GPM
 template <typename T_PARAMS, typename PRIO>
-double JointLimitAvoidance<T_PARAMS, PRIO>::getSelfMotionMagnitude(const Eigen::MatrixXd& particular_solution, const Eigen::MatrixXd& homogeneous_solution) const
+double JointLimitAvoidance<T_PARAMS, PRIO>::getSelfMotionMagnitude(const Eigen::MatrixXd& particular_solution,
+        const Eigen::MatrixXd& homogeneous_solution) const
 {
     const TwistControllerParams& params = this->constraint_params_.tc_params_;
     double k_H = params.k_H_jla;
@@ -222,10 +225,12 @@ void JointLimitAvoidance<T_PARAMS, PRIO>::calcPartialValues()
 
     const double min_delta = (joint_pos - limits_min);
     const double max_delta = (limits_max - joint_pos);
-    const double nominator = (2.0 * joint_pos - limits_min - limits_max) * (limits_max - limits_min) * (limits_max - limits_min);
+    const double nominator = (2.0 * joint_pos - limits_min - limits_max) * (limits_max - limits_min) *
+                                (limits_max - limits_min);
     const double denom = 4.0 * min_delta * min_delta * max_delta * max_delta;
 
-    partial_values(this->constraint_params_.joint_idx_) = std::abs(denom) > ZERO_THRESHOLD ? nominator / denom : nominator / DIV0_SAFE;
+    partial_values(this->constraint_params_.joint_idx_) = std::abs(denom) >
+                        ZERO_THRESHOLD ? nominator / denom : nominator / DIV0_SAFE;
     this->partial_values_ = partial_values;
 }
 /* END JointLimitAvoidance **************************************************************************************/
@@ -258,7 +263,8 @@ double JointLimitAvoidanceMid<T_PARAMS, PRIO>::getActivationGain() const
 
 /// Returns a value for k_H to weight the partial values for e.g. GPM
 template <typename T_PARAMS, typename PRIO>
-double JointLimitAvoidanceMid<T_PARAMS, PRIO>::getSelfMotionMagnitude(const Eigen::MatrixXd& particular_solution, const Eigen::MatrixXd& homogeneous_solution) const
+double JointLimitAvoidanceMid<T_PARAMS, PRIO>::getSelfMotionMagnitude(const Eigen::MatrixXd& particular_solution,
+        const Eigen::MatrixXd& homogeneous_solution) const
 {
     const TwistControllerParams& params = this->constraint_params_.tc_params_;
     double k_H = params.k_H_jla;
@@ -420,7 +426,8 @@ void JointLimitAvoidanceIneq<T_PARAMS, PRIO>::calculate()
 
     if (this->state_.getCurrent() == CRITICAL && this->prediction_value_ < rel_val)
     {
-        ROS_WARN_STREAM(this->getTaskId() << ": Current state is CRITICAL but prediction is smaller than current rel_val -> Stay in CRIT.");
+        ROS_WARN_STREAM(this->getTaskId() << ": Current state is CRITICAL but prediction is smaller than current "
+                                             "rel_val -> Stay in CRIT.");
     }
     else if (rel_val < critical || this->prediction_value_ < critical)
     {
@@ -462,7 +469,8 @@ double JointLimitAvoidanceIneq<T_PARAMS, PRIO>::getActivationGain() const
     }
     else if (rel_delta < activation_buffer_region)
     {
-        activation_gain = 0.5 * (1.0 + cos(M_PI * (rel_delta - activation_threshold) / (activation_buffer_region - activation_threshold)));
+        activation_gain = 0.5 * (1.0 + cos(M_PI * (rel_delta - activation_threshold) /
+                          (activation_buffer_region - activation_threshold)));
     }
     else
     {
@@ -479,7 +487,8 @@ double JointLimitAvoidanceIneq<T_PARAMS, PRIO>::getActivationGain() const
 
 /// Returns a value for k_H to weight the partial values for e.g. GPM
 template <typename T_PARAMS, typename PRIO>
-double JointLimitAvoidanceIneq<T_PARAMS, PRIO>::getSelfMotionMagnitude(const Eigen::MatrixXd& particular_solution, const Eigen::MatrixXd& homogeneous_solution) const
+double JointLimitAvoidanceIneq<T_PARAMS, PRIO>::getSelfMotionMagnitude(const Eigen::MatrixXd& particular_solution,
+                const Eigen::MatrixXd& homogeneous_solution) const
 {
     double factor;
     const TwistControllerParams& params = this->constraint_params_.tc_params_;

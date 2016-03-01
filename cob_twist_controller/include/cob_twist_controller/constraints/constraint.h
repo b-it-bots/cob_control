@@ -160,7 +160,8 @@ class JointLimitAvoidance : public ConstraintBase<T_PARAMS, PRIO>
         virtual Eigen::VectorXd getTaskDerivatives() const;
 
         virtual double getActivationGain() const;
-        virtual double getSelfMotionMagnitude(const Eigen::MatrixXd& particular_solution, const Eigen::MatrixXd& homogeneous_solution) const;
+        virtual double getSelfMotionMagnitude(const Eigen::MatrixXd& particular_solution,
+                                              const Eigen::MatrixXd& homogeneous_solution) const;
 
     private:
         virtual ConstraintTypes getType() const;
@@ -196,7 +197,8 @@ class JointLimitAvoidanceMid : public ConstraintBase<T_PARAMS, PRIO>
         virtual void calculate();
 
         virtual double getActivationGain() const;
-        virtual double getSelfMotionMagnitude(const Eigen::MatrixXd& particular_solution, const Eigen::MatrixXd& homogeneous_solution) const;
+        virtual double getSelfMotionMagnitude(const Eigen::MatrixXd& particular_solution,
+                                              const Eigen::MatrixXd& homogeneous_solution) const;
 
     private:
         virtual ConstraintTypes getType() const;
@@ -234,7 +236,8 @@ class JointLimitAvoidanceIneq : public ConstraintBase<T_PARAMS, PRIO>
         virtual void calculate();
 
         virtual double getActivationGain() const;
-        virtual double getSelfMotionMagnitude(const Eigen::MatrixXd& particular_solution, const Eigen::MatrixXd& homogeneous_solution) const;
+        virtual double getSelfMotionMagnitude(const Eigen::MatrixXd& particular_solution,
+                                              const Eigen::MatrixXd& homogeneous_solution) const;
 
     private:
         virtual ConstraintTypes getType() const;

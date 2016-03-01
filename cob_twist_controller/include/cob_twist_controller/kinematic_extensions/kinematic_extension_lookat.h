@@ -47,7 +47,7 @@
 #include "cob_twist_controller/kinematic_extensions/kinematic_extension_base.h"
 #include "cob_twist_controller/utils/simpson_integrator.h"
 
-/* BEGIN KinematicExtensionLookat ****************************************************************************************/
+/* BEGIN KinematicExtensionLookat *************************************************************************************/
 /// Class to be used for Cartesian KinematicExtensions for Lookat.
 class KinematicExtensionLookat : public KinematicExtensionBase
 {
@@ -90,6 +90,6 @@ class KinematicExtensionLookat : public KinematicExtensionBase
         tf::TransformBroadcaster br_;
         void broadcastFocusFrame(const ros::TimerEvent& event);
 };
-/* END KinematicExtensionLookat **********************************************************************************************/
+/* END KinematicExtensionLookat ***************************************************************************************/
 
 #endif  // COB_TWIST_CONTROLLER_KINEMATIC_EXTENSIONS_KINEMATIC_EXTENSION_LOOKAT_H

@@ -31,8 +31,9 @@
 #include <cob_cartesian_controller/trajectory_profile_generator/trajectory_profile_generator_sinoid.h>
 #include <cob_cartesian_controller/Profile.h>
 
-/* BEGIN TrajectoryProfileBuilder *****************************************************************************************/
-TrajectoryProfileBase* TrajectoryProfileBuilder::createProfile(const cob_cartesian_controller::CartesianActionStruct& params)
+/* BEGIN TrajectoryProfileBuilder *************************************************************************************/
+TrajectoryProfileBase* TrajectoryProfileBuilder::createProfile
+        (const cob_cartesian_controller::CartesianActionStruct& params)
 {
     cob_cartesian_controller::Profile msg;
 
@@ -55,4 +56,4 @@ TrajectoryProfileBase* TrajectoryProfileBuilder::createProfile(const cob_cartesi
 
     return ib;
 }
-/* END TrajectoryProfileBuilder *******************************************************************************************/
+/* END TrajectoryProfileBuilder ***************************************************************************************/

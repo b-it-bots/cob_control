@@ -38,7 +38,7 @@ template
 class MovingAverageBase
 {
     public:
-        explicit MovingAverageBase()
+        MovingAverageBase()
         {}
 
         virtual void reset() = 0;

@@ -97,7 +97,8 @@ protected:
         return true;
     }
 
-    virtual bool getProfileTimings(double Se, double te, bool calcMaxTe, cob_cartesian_controller::ProfileTimings& pt) = 0;
+    virtual bool getProfileTimings(double Se, double te, bool calcMaxTe,
+                                   cob_cartesian_controller::ProfileTimings& pt) = 0;
     virtual std::vector<double> getTrajectory(double se, cob_cartesian_controller::ProfileTimings pt) = 0;
 
     const cob_cartesian_controller::CartesianActionStruct& params_;

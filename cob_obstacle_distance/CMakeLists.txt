@@ -30,7 +30,7 @@ generate_messages(
 
 catkin_package(
   CATKIN_DEPENDS cob_srvs dynamic_reconfigure eigen_conversions geometry_msgs kdl_conversions kdl_parser message_runtime moveit_msgs roscpp roslib sensor_msgs shape_msgs std_msgs tf_conversions tf urdf visualization_msgs
-  DEPENDS assimp Boost fcl
+  DEPENDS Boost
   INCLUDE_DIRS include
   LIBRARIES parsers marker_shapes_management
 )

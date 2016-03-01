@@ -139,7 +139,7 @@ KDL::JntArray LimiterAllJointPositions::enforceLimits(const KDL::JntArray& q_dot
 
     for (unsigned int i = 0; i < q_dot_ik.rows(); i++)
     {
-        if((limiter_params_.limits_max[i] - LIMIT_SAFETY_THRESHOLD <= q(i) && q_dot_ik(i) > 0) ||
+        if ((limiter_params_.limits_max[i] - LIMIT_SAFETY_THRESHOLD <= q(i) && q_dot_ik(i) > 0) ||
            (limiter_params_.limits_min[i] + LIMIT_SAFETY_THRESHOLD >= q(i) && q_dot_ik(i) < 0))
         {
             ROS_ERROR_STREAM("Joint " << i << " violates its limits. Setting to Zero!");
@@ -151,7 +151,8 @@ KDL::JntArray LimiterAllJointPositions::enforceLimits(const KDL::JntArray& q_dot
         {
             if (q_dot_ik(i) > 0)  // Joint moves towards the MAX limit
             {
-                double temp = 1.0 / pow((0.5 + 0.5 * cos(M_PI * (q(i) + tolerance - limiter_params_.limits_max[i]) / tolerance)), 5.0);
+                double temp = 1.0 / pow((0.5 + 0.5 * cos(M_PI * (q(i) + tolerance - limiter_params_.limits_max[i]) /
+                                         tolerance)), 5.0);
                 if (temp > max_factor)
                 {
                     max_factor = temp;
@@ -164,7 +165,8 @@ KDL::JntArray LimiterAllJointPositions::enforceLimits(const KDL::JntArray& q_dot
         {
             if (q_dot_ik(i) < 0)  // Joint moves towards the MIN limit
             {
-                double temp = 1.0 / pow(0.5 + 0.5 * cos(M_PI * (q(i) - tolerance - limiter_params_.limits_min[i]) / tolerance), 5.0);
+                double temp = 1.0 / pow(0.5 + 0.5 * cos(M_PI * (q(i) - tolerance - limiter_params_.limits_min[i]) /
+                                        tolerance), 5.0);
                 if (temp > max_factor)
                 {
                     max_factor = temp;
@@ -176,7 +178,8 @@ KDL::JntArray LimiterAllJointPositions::enforceLimits(const KDL::JntArray& q_dot
 
     if (max_factor > 1.0)
     {
-        ROS_ERROR_STREAM_THROTTLE(1, "Position tolerance surpassed (by Joint " << joint_index << "): Scaling ALL VELOCITIES with factor = " << max_factor);
+        ROS_ERROR_STREAM_THROTTLE(1, "Position tolerance surpassed (by Joint " << joint_index <<
+                                  "): Scaling ALL VELOCITIES with factor = " << max_factor);
         for (unsigned int i = 0; i < q_dot_ik.rows(); i++)
         {
             q_dot_norm(i) = q_dot_ik(i) / max_factor;
@@ -209,7 +212,8 @@ KDL::JntArray LimiterAllJointVelocities::enforceLimits(const KDL::JntArray& q_do
 
     if (max_factor > 1.0)
     {
-        ROS_WARN_STREAM_THROTTLE(1, "Velocity limit surpassed (by Joint " << joint_index << "): Scaling ALL VELOCITIES with factor = " << max_factor);
+        ROS_WARN_STREAM_THROTTLE(1, "Velocity limit surpassed (by Joint " << joint_index <<
+                                 "): Scaling ALL VELOCITIES with factor = " << max_factor);
         for (unsigned int i = 0; i < q_dot_ik.rows(); i++)
         {
             q_dot_norm(i) = q_dot_ik(i) / max_factor;
@@ -240,14 +244,15 @@ KDL::JntArray LimiterAllJointAccelerations::enforceLimits(const KDL::JntArray& q
  * This implementation calculates limits for the joint positions without keeping the direction.
  * Then for each corresponding joint velocity an individual factor for scaling is calculated and then used.
  */
-KDL::JntArray LimiterIndividualJointPositions::enforceLimits(const KDL::JntArray& q_dot_ik, const KDL::JntArray& q) const
+KDL::JntArray LimiterIndividualJointPositions::enforceLimits(const KDL::JntArray& q_dot_ik,
+                                                             const KDL::JntArray& q) const
 {
     KDL::JntArray q_dot_norm(q_dot_ik);
     double tolerance = limiter_params_.limits_tolerance / 180.0 * M_PI;
 
     for (unsigned int i = 0; i < q_dot_ik.rows(); i++)
     {
-        if(limiter_params_.limits_max[i] <= q(i) ||
+        if (limiter_params_.limits_max[i] <= q(i) ||
            limiter_params_.limits_min[i] >= q(i))
         {
             ROS_ERROR_STREAM("Joint " << i << " violates its limits. Setting to Zero!");
@@ -259,7 +264,8 @@ KDL::JntArray LimiterIndividualJointPositions::enforceLimits(const KDL::JntArray
         {
             if (q_dot_ik(i) > 0.0)  // Joint moves towards the MAX limit
             {
-                factor = 1.0 / pow((0.5 + 0.5 * cos(M_PI * (q(i) + tolerance - limiter_params_.limits_max[i]) / tolerance)), 5.0);
+                factor = 1.0 / pow((0.5 + 0.5 * cos(M_PI * (q(i) + tolerance - limiter_params_.limits_max[i]) /
+                                    tolerance)), 5.0);
                 q_dot_norm(i) = q_dot_norm(i) / factor;
             }
         }
@@ -268,7 +274,8 @@ KDL::JntArray LimiterIndividualJointPositions::enforceLimits(const KDL::JntArray
         {
             if (q_dot_ik(i) < 0.0)  // Joint moves towards the MIN limit
             {
-                factor = 1.0 / pow(0.5 + 0.5 * cos(M_PI * (q(i) - tolerance - limiter_params_.limits_min[i]) / tolerance), 5.0);
+                factor = 1.0 / pow(0.5 + 0.5 * cos(M_PI * (q(i) - tolerance - limiter_params_.limits_min[i]) /
+                                   tolerance), 5.0);
                 q_dot_norm(i) = q_dot_norm(i) / factor;
             }
         }
@@ -283,7 +290,8 @@ KDL::JntArray LimiterIndividualJointPositions::enforceLimits(const KDL::JntArray
  * This implementation calculates limits for the joint velocities without keeping the direction.
  * For each joint velocity in the vector an individual factor for scaling is calculated and used.
  */
-KDL::JntArray LimiterIndividualJointVelocities::enforceLimits(const KDL::JntArray& q_dot_ik, const KDL::JntArray& q) const
+KDL::JntArray LimiterIndividualJointVelocities::enforceLimits(const KDL::JntArray& q_dot_ik,
+                                                              const KDL::JntArray& q) const
 {
     KDL::JntArray q_dot_norm(q_dot_ik);
 
@@ -306,7 +314,8 @@ KDL::JntArray LimiterIndividualJointVelocities::enforceLimits(const KDL::JntArra
  * This implementation scales velocities based on given limits for joint accelerations without keeping the direction.
  * For each joint velocity in the vector an individual factor for scaling is calculated and used.
  */
-KDL::JntArray LimiterIndividualJointAccelerations::enforceLimits(const KDL::JntArray& q_dot_ik, const KDL::JntArray& q) const
+KDL::JntArray LimiterIndividualJointAccelerations::enforceLimits(const KDL::JntArray& q_dot_ik,
+                                                                 const KDL::JntArray& q) const
 {
     KDL::JntArray q_dot_norm(q_dot_ik);
 

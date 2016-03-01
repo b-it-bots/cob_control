@@ -47,7 +47,8 @@
 #include <cob_cartesian_controller/cartesian_controller_data_types.h>
 #include <cob_cartesian_controller/cartesian_controller_utils.h>
 
-typedef actionlib::SimpleActionServer<cob_cartesian_controller::CartesianControllerAction> SAS_CartesianControllerAction_t;
+typedef actionlib::SimpleActionServer<cob_cartesian_controller::CartesianControllerAction>
+            SAS_CartesianControllerAction_t;
 
 #define DEFAULT_CARTESIAN_TARGET "cartesian_target"
 
@@ -70,7 +71,8 @@ public:
     void actionPreempt(const bool success, const std::string& message);
     void actionAbort(const bool success, const std::string& message);
 
-    cob_cartesian_controller::CartesianActionStruct acceptGoal(boost::shared_ptr<const cob_cartesian_controller::CartesianControllerGoal> goal);
+    cob_cartesian_controller::CartesianActionStruct acceptGoal
+            (boost::shared_ptr<const cob_cartesian_controller::CartesianControllerGoal> goal);
     cob_cartesian_controller::MoveLinStruct convertMoveLin(const cob_cartesian_controller::MoveLin& move_lin_msg);
     cob_cartesian_controller::MoveCircStruct convertMoveCirc(const cob_cartesian_controller::MoveCirc& move_circ_msg);
 

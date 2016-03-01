@@ -40,7 +40,7 @@
 #include "cob_twist_controller/kinematic_extensions/kinematic_extension_lookat.h"
 
 
-/* BEGIN KinematicExtensionBuilder *****************************************************************************************/
+/* BEGIN KinematicExtensionBuilder ************************************************************************************/
 /// Class providing a static method to create kinematic extension objects.
 class KinematicExtensionBuilder
 {
@@ -50,10 +50,10 @@ class KinematicExtensionBuilder
 
         static KinematicExtensionBase* createKinematicExtension(const TwistControllerParams& params);
 };
-/* END KinematicExtensionBuilder *******************************************************************************************/
+/* END KinematicExtensionBuilder **************************************************************************************/
 
 
-/* BEGIN KinematicExtensionNone ****************************************************************************************/
+/* BEGIN KinematicExtensionNone ***************************************************************************************/
 /// Class implementing the interface in case KinematicExtension is disabled.
 class KinematicExtensionNone : public KinematicExtensionBase
 {
@@ -70,6 +70,6 @@ class KinematicExtensionNone : public KinematicExtensionBase
         LimiterParams adjustLimiterParams(const LimiterParams& limiter_params);
         void processResultExtension(const KDL::JntArray& q_dot_ik);
 };
-/* END KinematicExtensionNone **********************************************************************************************/
+/* END KinematicExtensionNone *****************************************************************************************/
 
 #endif  // COB_TWIST_CONTROLLER_KINEMATIC_EXTENSIONS_KINEMATIC_EXTENSION_BUILDER_H

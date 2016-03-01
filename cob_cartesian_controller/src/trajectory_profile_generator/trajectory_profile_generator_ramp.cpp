@@ -30,8 +30,9 @@
 #include <ros/ros.h>
 #include <cob_cartesian_controller/trajectory_profile_generator/trajectory_profile_generator_ramp.h>
 
-/* BEGIN TrajectoryProfileRamp ********************************************************************************************/
-inline bool TrajectoryProfileRamp::getProfileTimings(double Se, double te, bool calcMaxTe, cob_cartesian_controller::ProfileTimings& pt)
+/* BEGIN TrajectoryProfileRamp ****************************************************************************************/
+inline bool TrajectoryProfileRamp::getProfileTimings(double Se, double te, bool calcMaxTe,
+                                                     cob_cartesian_controller::ProfileTimings& pt)
 {
     CartesianControllerUtils utils;
     double tv, tb = 0.0;
@@ -96,4 +97,4 @@ inline std::vector<double> TrajectoryProfileRamp::getTrajectory(double se, cob_c
 
     return array;
 }
-/* END TrajectoryProfileRamp **********************************************************************************************/
+/* END TrajectoryProfileRamp ******************************************************************************************/

@@ -30,8 +30,9 @@
 #include <ros/ros.h>
 #include <cob_cartesian_controller/trajectory_profile_generator/trajectory_profile_generator_sinoid.h>
 
-/* BEGIN TrajectoryProfileSinoid ****************************************************************************************/
-inline bool TrajectoryProfileSinoid::getProfileTimings(double Se, double te, bool calcMaxTe, cob_cartesian_controller::ProfileTimings& pt)
+/* BEGIN TrajectoryProfileSinoid **************************************************************************************/
+inline bool TrajectoryProfileSinoid::getProfileTimings(double Se, double te, bool calcMaxTe,
+                                                       cob_cartesian_controller::ProfileTimings& pt)
 {
     CartesianControllerUtils utils;
     double tv, tb = 0.0;
@@ -69,7 +70,8 @@ inline bool TrajectoryProfileSinoid::getProfileTimings(double Se, double te, boo
     return false;
 }
 
-inline std::vector<double> TrajectoryProfileSinoid::getTrajectory(double se, cob_cartesian_controller::ProfileTimings pt)
+inline std::vector<double> TrajectoryProfileSinoid::getTrajectory(double se,
+                                                                  cob_cartesian_controller::ProfileTimings pt)
 {
     std::vector<double> array;
     unsigned int i = 1;
@@ -81,19 +83,22 @@ inline std::vector<double> TrajectoryProfileSinoid::getTrajectory(double se, cob
     // 0 <= t <= tb
     for (; i <= pt.steps_tb; i++)
     {
-        array.push_back(direction * (accl*(0.25*pow(i*t_ipo, 2) + pow(pt.tb, 2)/(8*pow(M_PI, 2)) *(cos(2*M_PI/pt.tb * (i*t_ipo))-1))));
+        array.push_back(direction * (accl * (0.25 * pow(i * t_ipo, 2) + pow(pt.tb, 2) / (8 * pow(M_PI, 2)) *
+                        (cos(2 * M_PI / pt.tb * (i * t_ipo)) - 1))));
     }
     // tb <= t <= tv
     for (; i <= (pt.steps_tb + pt.steps_tv); i++)
     {
-        array.push_back(direction * (pt.vel*(i*t_ipo-0.5*pt.tb)));
+        array.push_back(direction * (pt.vel * (i * t_ipo - 0.5 * pt.tb)));
     }
     // tv <= t <= te
     for (; i <= (pt.steps_tv + pt.steps_tb + pt.steps_te + 1); i++)
     {
-        array.push_back(direction * (0.5 * accl *(pt.te*(i*t_ipo + pt.tb) - 0.5*(pow(i*t_ipo, 2)+pow(pt.te, 2)+2*pow(pt.tb, 2)) + (pow(pt.tb, 2)/(4*pow(M_PI, 2))) * (1-cos(((2*M_PI)/pt.tb) * (i*t_ipo-pt.tv))))));
+        array.push_back(direction * (0.5 * accl * (pt.te * (i * t_ipo + pt.tb) - 0.5 * (pow(i * t_ipo, 2) +
+                        pow(pt.te, 2) + 2 * pow(pt.tb, 2)) + (pow(pt.tb, 2) / (4 * pow(M_PI, 2))) *
+                        (1 - cos(((2 * M_PI) / pt.tb) * (i * t_ipo - pt.tv))))));
     }
 
     return array;
 }
-/* END TrajectoryProfileSinoid ******************************************************************************************/
+/* END TrajectoryProfileSinoid ****************************************************************************************/

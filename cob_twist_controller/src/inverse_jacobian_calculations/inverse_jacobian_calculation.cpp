@@ -42,7 +42,8 @@ Eigen::MatrixXd PInvBySVD::calculate(const Eigen::MatrixXd& jacobian) const
     Eigen::VectorXd singularValues = svd.singularValues();
     Eigen::VectorXd singularValuesInv = Eigen::VectorXd::Zero(singularValues.rows());
 
-    // small change to ref: here quadratic damping due to Control of Redundant Robot Manipulators : R.V. Patel, 2005, Springer [Page 13-14]
+    // small change to ref: here quadratic damping due to Control of Redundant Robot Manipulators : R.V. Patel, 2005,
+    // Springer [Page 13-14]
     for (uint32_t i = 0; i < singularValues.rows(); ++i)
     {
         double denominator = singularValues(i) * singularValues(i);
@@ -84,7 +85,8 @@ Eigen::MatrixXd PInvBySVD::calculate(const TwistControllerParams& params,
     }
     else
     {
-        // small change to ref: here quadratic damping due to Control of Redundant Robot Manipulators : R.V. Patel, 2005, Springer [Page 13-14]
+        // small change to ref: here quadratic damping due to Control of Redundant Robot Manipulators : R.V. Patel,
+        // 2005, Springer [Page 13-14]
         for (uint32_t i = 0; i < singularValues.rows(); ++i)
         {
             double denominator = (singularValues(i) * singularValues(i) + pow(lambda, 2) );
@@ -92,7 +94,8 @@ Eigen::MatrixXd PInvBySVD::calculate(const TwistControllerParams& params,
             singularValuesInv(i) = (singularValues(i) < eps_truncation) ? 0.0 : singularValues(i) / denominator;
         }
 
-        //// Formula from Advanced Robotics : Redundancy and Optimization : Nakamura, Yoshihiko, 1991, Addison-Wesley Pub. Co [Page 258-260]
+        //// Formula from Advanced Robotics : Redundancy and Optimization : Nakamura, Yoshihiko, 1991,
+        //// Addison-Wesley Pub. Co [Page 258-260]
         // for(uint32_t i = 0; i < singularValues.rows(); ++i)
         // {
         //       // damping is disabled due to damping factor lower than a const. limit

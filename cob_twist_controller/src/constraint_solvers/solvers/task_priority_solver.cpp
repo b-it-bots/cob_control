@@ -74,7 +74,8 @@ Eigen::MatrixXd TaskPrioritySolver::solve(const Vector6d_t& in_cart_velocities,
             derivative_cost_func_value = (*it)->getDerivativeValue();
             partial_cost_func = (*it)->getPartialValues();  // Equal to (partial g) / (partial q) = J_g
             activation_gain = (*it)->getActivationGain();
-            magnitude = (*it)->getSelfMotionMagnitude(Eigen::MatrixXd::Zero(1, 1), Eigen::MatrixXd::Zero(1, 1));  // not necessary to pass valid values here.
+            // not necessary to pass valid values here.
+            magnitude = (*it)->getSelfMotionMagnitude(Eigen::MatrixXd::Zero(1, 1), Eigen::MatrixXd::Zero(1, 1));
 
             ROS_INFO_STREAM("activation_gain: " << activation_gain);
             ROS_INFO_STREAM("smm: " << magnitude);
@@ -88,7 +89,8 @@ Eigen::MatrixXd TaskPrioritySolver::solve(const Vector6d_t& in_cart_velocities,
         }
 
         Eigen::MatrixXd m_derivative_cost_func_value = derivative_cost_func_value * Eigen::MatrixXd::Identity(1, 1);
-        qdots_out = particular_solution + this->params_.k_H * activation_gain * jac_inv_2nd_term * (magnitude * m_derivative_cost_func_value - partial_cost_func.transpose() * particular_solution);
+        qdots_out = particular_solution + this->params_.k_H * activation_gain * jac_inv_2nd_term *
+                    (magnitude * m_derivative_cost_func_value - partial_cost_func.transpose() * particular_solution);
     }
     else
     {

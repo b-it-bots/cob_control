@@ -46,6 +46,6 @@ public:
     virtual bool getProfileTimings(double Se, double te, bool calcMaxTe, cob_cartesian_controller::ProfileTimings& pt);
     virtual std::vector<double> getTrajectory(double se, cob_cartesian_controller::ProfileTimings pt);
 };
-/* END TrajectoryProfileRamp **********************************************************************************************/
+/* END TrajectoryProfileRamp ******************************************************************************************/
 
 #endif  // COB_CARTESIAN_CONTROLLER_TRAJECTORY_PROFILE_GENERATOR_TRAJECTORY_PROFILE_GENERATOR_RAMP_H

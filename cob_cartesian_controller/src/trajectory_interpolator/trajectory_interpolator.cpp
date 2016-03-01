@@ -85,9 +85,12 @@ bool TrajectoryInterpolator::linearInterpolation(geometry_msgs::PoseArray& pose_
         }
         else
         {
-            pose.position.x = as.move_lin.start.position.x + linear_path.at(i) * (as.move_lin.end.position.x - as.move_lin.start.position.x) / linear_path.back();
-            pose.position.y = as.move_lin.start.position.y + linear_path.at(i) * (as.move_lin.end.position.y - as.move_lin.start.position.y) / linear_path.back();
-            pose.position.z = as.move_lin.start.position.z + linear_path.at(i) * (as.move_lin.end.position.z - as.move_lin.start.position.z) / linear_path.back();
+            pose.position.x = as.move_lin.start.position.x + linear_path.at(i) *
+                              (as.move_lin.end.position.x - as.move_lin.start.position.x) / linear_path.back();
+            pose.position.y = as.move_lin.start.position.y + linear_path.at(i) *
+                              (as.move_lin.end.position.y - as.move_lin.start.position.y) / linear_path.back();
+            pose.position.z = as.move_lin.start.position.z + linear_path.at(i) *
+                              (as.move_lin.end.position.z - as.move_lin.start.position.z) / linear_path.back();
         }
 
         tf::quaternionTFToMsg(q_start.slerp(q_end, path.at(i) * norm_factor), pose.orientation);
@@ -133,7 +136,9 @@ bool TrajectoryInterpolator::circularInterpolation(geometry_msgs::PoseArray& pos
 
      path_array = path_matrix[0];
      // Define Center Pose
-     C.setOrigin(tf::Vector3(as.move_circ.pose_center.position.x, as.move_circ.pose_center.position.y, as.move_circ.pose_center.position.z));
+     C.setOrigin(tf::Vector3(as.move_circ.pose_center.position.x,
+                             as.move_circ.pose_center.position.y,
+                             as.move_circ.pose_center.position.z));
      tf::quaternionMsgToTF(as.move_circ.pose_center.orientation, q);
      C.setRotation(q);
 
@@ -141,16 +146,19 @@ bool TrajectoryInterpolator::circularInterpolation(geometry_msgs::PoseArray& pos
      for (unsigned int i = 0; i < path_array.size(); i++)
      {
          // Rotate T
-         T.setOrigin(tf::Vector3(cos(path_array.at(i)) * as.move_circ.radius, 0, sin(path_array.at(i)) * as.move_circ.radius));
+         T.setOrigin(tf::Vector3(cos(path_array.at(i)) * as.move_circ.radius, 0,
+                                     sin(path_array.at(i)) * as.move_circ.radius));
 
          if (forward)
          {
-             T.setOrigin(tf::Vector3(cos(path_array.at(i)) * as.move_circ.radius, 0, sin(path_array.at(i)) * as.move_circ.radius));
+             T.setOrigin(tf::Vector3(cos(path_array.at(i)) * as.move_circ.radius, 0,
+                                     sin(path_array.at(i)) * as.move_circ.radius));
              q.setRPY(0, -path_array.at(i), 0);
          }
          else
          {
-             T.setOrigin(tf::Vector3(cos(as.move_circ.start_angle - path_array.at(i)) * as.move_circ.radius, 0, sin(as.move_circ.start_angle - path_array.at(i)) * as.move_circ.radius));
+             T.setOrigin(tf::Vector3(cos(as.move_circ.start_angle - path_array.at(i)) * as.move_circ.radius, 0,
+                                     sin(as.move_circ.start_angle - path_array.at(i)) * as.move_circ.radius));
              q.setRPY(0, path_array.at(i), 0);
          }
 
