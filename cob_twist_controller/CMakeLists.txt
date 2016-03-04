@@ -17,7 +17,21 @@ generate_dynamic_reconfigure_options(
 )
 
 catkin_package(
-  CATKIN_DEPENDS cob_obstacle_distance cob_srvs dynamic_reconfigure eigen_conversions geometry_msgs kdl_conversions kdl_parser nav_msgs roscpp sensor_msgs std_msgs tf urdf visualization_msgs
+  CATKIN_DEPENDS
+    cob_obstacle_distance
+    cob_srvs
+    dynamic_reconfigure
+    eigen_conversions
+    geometry_msgs
+    kdl_conversions
+    kdl_parser nav_msgs
+    roscpp
+    sensor_msgs
+    std_msgs
+    tf
+    trajectory_msgs
+    urdf
+    visualization_msgs
   DEPENDS Boost
   INCLUDE_DIRS include
   LIBRARIES damping_methods inv_calculations constraint_solvers limiters controller_interfaces kinematic_extensions inverse_differential_kinematics_solver twist_controller
