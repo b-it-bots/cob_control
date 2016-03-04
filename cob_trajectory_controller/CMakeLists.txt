@@ -8,7 +8,13 @@ generate_dynamic_reconfigure_options(
   cfg/CobTrajectoryController.cfg
 )
 
-catkin_package()
+catkin_package(
+  CATKIN_DEPENDS
+    control_msgs
+    sensor_msgs
+    std_msgs
+    trajectory_msgs
+)
 
 ### BUILD ###
 include_directories(common/include ${catkin_INCLUDE_DIRS})

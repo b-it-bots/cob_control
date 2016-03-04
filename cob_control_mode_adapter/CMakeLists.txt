@@ -1,11 +1,23 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(cob_control_mode_adapter)
 
-find_package(catkin REQUIRED COMPONENTS controller_manager_msgs roscpp std_msgs)
+find_package(catkin REQUIRED
+  COMPONENTS
+    controller_manager_msgs
+    roscpp
+    std_msgs
+)
 
-find_package(Boost REQUIRED COMPONENTS thread)
+find_package(Boost REQUIRED
+  COMPONENTS
+    thread
+)
 
-catkin_package()
+catkin_package(
+  CATKIN_DEPENDS
+   controller_manager_msgs
+   std_msgs
+)
 
 ### BUILD ###
 include_directories(${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})

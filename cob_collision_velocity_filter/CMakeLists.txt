@@ -14,7 +14,12 @@ endif()
 ### Dynamic reconfigure ###
 generate_dynamic_reconfigure_options(cfg/CollisionVelocityFilter.cfg)
 
-catkin_package()
+catkin_package(
+  CATKIN_DEPENDS
+    geometry_msgs
+    nav_msgs
+    visualization_msgs
+)
 
 ### BUILD ###
 include_directories(include ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})

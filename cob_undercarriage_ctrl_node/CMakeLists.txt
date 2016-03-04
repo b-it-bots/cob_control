@@ -1,9 +1,28 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(cob_undercarriage_ctrl_node)
 
-find_package(catkin REQUIRED COMPONENTS cob_msgs cob_omni_drive_controller control_msgs diagnostic_msgs diagnostic_updater geometry_msgs nav_msgs roscpp tf urdf)
+find_package(catkin REQUIRED
+    COMPONENTS
+      cob_msgs
+      cob_omni_drive_controller
+      control_msgs
+      diagnostic_msgs
+      diagnostic_updater
+      geometry_msgs
+      nav_msgs
+      roscpp
+      tf
+      urdf
+)
 
-catkin_package()
+catkin_package(
+  CATKIN_DEPENDS
+    cob_msgs
+    control_msgs
+    diagnostic_msgs
+    geometry_msgs
+    nav_msgs
+)
 
 ###########
 ## Build ##
