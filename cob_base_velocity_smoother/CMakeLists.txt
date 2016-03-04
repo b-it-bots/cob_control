@@ -28,7 +28,7 @@ catkin_package(
 )
 
 ### BUILD ###
-include_directories(include/cob_base_velocity_smoother ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
+include_directories(include ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 
 add_executable(${PROJECT_NAME} src/cob_base_velocity_smoother.cpp)
 add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
