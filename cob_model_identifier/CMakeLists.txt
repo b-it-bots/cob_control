@@ -10,7 +10,11 @@ add_definitions(${EIGEN_DEFINITIONS})
 
 find_package(TinyXML REQUIRED)
 
-catkin_package()
+catkin_package(
+  CATKIN_DEPENDS
+    geometry_msgs
+    sensor_msgs
+)
 
 ### BUILD ###
 include_directories(include ${catkin_INCLUDE_DIRS} ${EIGEN_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})

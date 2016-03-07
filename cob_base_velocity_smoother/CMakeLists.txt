@@ -1,7 +1,14 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(cob_base_velocity_smoother)
 
-find_package(catkin REQUIRED COMPONENTS dynamic_reconfigure geometry_msgs nav_msgs roscpp std_msgs)
+find_package(catkin REQUIRED
+  COMPONENTS
+    dynamic_reconfigure
+    geometry_msgs
+    nav_msgs
+    roscpp
+    std_msgs
+)
 
 find_package(Boost REQUIRED thread)
 
@@ -13,10 +20,15 @@ else()
   add_definitions(-std=c++0x)
 endif()
 
-catkin_package()
+catkin_package(
+  CATKIN_DEPENDS
+    geometry_msgs
+    nav_msgs
+    std_msgs
+)
 
 ### BUILD ###
-include_directories(include include/cob_base_velocity_smoother ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
+include_directories(include ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 
 add_executable(${PROJECT_NAME} src/cob_base_velocity_smoother.cpp)
 add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
